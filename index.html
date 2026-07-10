@@ -624,6 +624,40 @@
     </div>
 </div>
 
+<!-- ✅ نافذة نقل البيانات بين الأجهزة -->
+<div class="modal-overlay" id="transferModal" onclick="if(event.target===this)closeTransferModal()">
+    <div class="modal">
+        <div class="modal-x" onclick="closeTransferModal()" title="إغلاق"><i class="fas fa-xmark"></i></div>
+        <div class="modal-head">
+            <div class="modal-icon"><i class="fas fa-share-nodes"></i></div>
+            <div class="modal-title">نقل البيانات بين الأجهزة</div>
+        </div>
+
+        <div class="modal-divider"></div>
+
+        <!-- ✅ القسم 1: كود هذا الجهاز -->
+        <div class="modal-field">
+            <label><i class="fas fa-qrcode"></i> كود هذا الجهاز — انسخه وأرسله للجهاز الآخر</label>
+            <textarea id="transferCodeOut" readonly placeholder="اضغط زر توليد الكود لإنشاء كود النقل..." style="min-height:90px;font-family:monospace;font-size:11px;word-break:break-all;resize:none"></textarea>
+        </div>
+        <div class="modal-actions" style="margin-top:5px">
+            <button class="btn btn-fire" onclick="generateTransferCode()"><i class="fas fa-rotate"></i> توليد الكود</button>
+            <button class="btn btn-ghost" onclick="copyTransferCode()"><i class="fas fa-copy"></i> نسخ</button>
+        </div>
+
+        <div class="modal-divider"></div>
+
+        <!-- ✅ القسم 2: استيراد كود من جهاز آخر -->
+        <div class="modal-field">
+            <label><i class="fas fa-file-import"></i> استيراد كود من جهاز آخر — الصق الكود هنا</label>
+            <textarea id="transferCodeIn" placeholder="الصق الكود هنا..." style="min-height:90px;font-family:monospace;font-size:11px;word-break:break-all;resize:none"></textarea>
+        </div>
+        <div class="modal-actions" style="margin-top:5px">
+            <button class="btn btn-fire" onclick="importTransferCode()"><i class="fas fa-download"></i> استيراد البيانات</button>
+        </div>
+    </div>
+</div>
+
 <!-- النافذة المنبثقة للإعدادات -->
 <div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
     <div class="modal">
@@ -803,6 +837,7 @@
                 <div class="app-tagline">البوتات</div>
             </div>
             <button class="btn btn-ghost btn-xs" onclick="openUnifiedSettings()" title="إعدادات موحدة لكل القنوات" style="flex-shrink:0"><i class="fas fa-screwdriver-wrench"></i></button>
+            <button class="btn btn-ghost btn-xs" onclick="openTransferModal()" title="نقل البيانات بين الأجهزة" style="flex-shrink:0"><i class="fas fa-share-nodes"></i></button>
             <button class="btn btn-fire btn-xs" onclick="openQuickSend()" title="إرسال رسالة مباشرة" style="flex-shrink:0"><i class="fas fa-paper-plane"></i></button>
         </div>
 
@@ -1489,6 +1524,237 @@ function openUnifiedSettings() {
 
 function closeUnifiedSettings() {
     $('unifiedModal').classList.remove('open');
+}
+
+// ═══════════════════════════════════════
+//  ✅ نقل البيانات بين الأجهزة (Transfer Code)
+// ═══════════════════════════════════════
+
+// ✅ تحويل نص UTF-8 إلى base64 (يتعامل مع العربية والرموز)
+function utf8ToBase64(str) {
+    try {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(m, p1) {
+            return String.fromCharCode('0x' + p1);
+        }));
+    } catch(e) { return ''; }
+}
+
+// ✅ تحويل base64 إلى نص UTF-8
+function base64ToUtf8(b64) {
+    try {
+        return decodeURIComponent(Array.prototype.map.call(atob(b64), function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    } catch(e) { return ''; }
+}
+
+// ✅ فتح نافذة النقل
+function openTransferModal() {
+    $('transferCodeOut').value = '';
+    $('transferCodeIn').value = '';
+    $('transferModal').classList.add('open');
+}
+
+function closeTransferModal() {
+    $('transferModal').classList.remove('open');
+}
+
+// ✅ توليد كود النقل من كل بيانات الموقع
+function generateTransferCode() {
+    try {
+        // ✅ تجميع البوتات والقنوات فقط (بدون الإعدادات الموحدة)
+        var data = {
+            version: 2,
+            timestamp: Date.now(),
+            bots: accounts.map(function(b) {
+                return {
+                    id: b.id,
+                    token: b.token,
+                    username: b.username,
+                    channels: b.channels.map(function(ch) {
+                        return {
+                            slug: ch.slug,
+                            messages: ch.messages || '',
+                            interval: ch.interval,
+                            repeat: ch.repeat,
+                            isInfinite: ch.isInfinite,
+                            enabled: ch.enabled !== false,
+                            randomDelay: !!ch.randomDelay,
+                            delayMin: ch.delayMin || 3,
+                            delayMax: ch.delayMax || 7,
+                            randomMessages: !!ch.randomMessages,
+                            chatroomId: ch.chatroomId || null,
+                            verified: !!ch.verified
+                        };
+                    }),
+                    workingProxy: b.workingProxy != null ? b.workingProxy : -1
+                };
+            })
+        };
+
+        var json = JSON.stringify(data);
+        var b64 = utf8ToBase64(json);
+        // ✅ إضافة بادئة للتمييز
+        var code = 'RK1-' + b64;
+        $('transferCodeOut').value = code;
+        toast('تم توليد الكود (' + data.bots.length + ' بوت)', 's');
+    } catch(e) {
+        toast('خطأ في توليد الكود: ' + e.message, 'e');
+    }
+}
+
+// ✅ نسخ كود النقل
+function copyTransferCode() {
+    var code = $('transferCodeOut').value.trim();
+    if (!code) {
+        toast('اضغط "توليد الكود" أولاً', 'e');
+        return;
+    }
+    var inp = $('transferCodeOut');
+    inp.select();
+    inp.setSelectionRange(0, 999999);
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(code).then(function() {
+                toast('تم نسخ الكود', 's');
+            }).catch(function() {
+                // ✅ fallback
+                document.execCommand('copy');
+                toast('تم نسخ الكود', 's');
+            });
+        } else {
+            document.execCommand('copy');
+            toast('تم نسخ الكود', 's');
+        }
+    } catch(e) {
+        toast('تعذّر النسخ — انسخ يدوياً', 'e');
+    }
+}
+
+// ✅ استيراد كود النقل — يضيف البوتات على الموجودة (بدون حذف)
+function importTransferCode() {
+    var code = $('transferCodeIn').value.trim();
+    if (!code) {
+        toast('الصق الكود أولاً', 'e');
+        return;
+    }
+
+    // ✅ التحقق من البادئة
+    if (code.indexOf('RK1-') !== 0) {
+        toast('كود غير صالح — تأكد من نسخه بالكامل', 'e');
+        return;
+    }
+
+    var b64 = code.substring(4);
+    var json = base64ToUtf8(b64);
+    if (!json) {
+        toast('كود تالف أو غير مكتمل', 'e');
+        return;
+    }
+
+    var data;
+    try {
+        data = JSON.parse(json);
+    } catch(e) {
+        toast('كود غير صالح', 'e');
+        return;
+    }
+
+    if (!data || !data.bots || !Array.isArray(data.bots)) {
+        toast('بنية الكود غير صحيحة', 'e');
+        return;
+    }
+
+    // ✅ عد البوتات الموجودة + البوتات الجديدة
+    var existingCount = accounts.length;
+    var newBotsCount = data.bots.length;
+
+    // ✅ تحذير — سيتم الإضافة على الموجود
+    var confirmMsg = 'سيتم إضافة ' + newBotsCount + ' بوت من الكود إلى ' + existingCount + ' بوت موجود.\nالإجمالي بعد الاستيراد: ' + (existingCount + newBotsCount) + ' بوت.\n\nهل أنت متأكد؟';
+    if (!confirm(confirmMsg)) return;
+
+    // ✅ تعقّب التوكنات الموجودة لتجاهل التكرار
+    var existingTokens = {};
+    for (var ei = 0; ei < accounts.length; ei++) {
+        existingTokens[accounts[ei].token] = true;
+    }
+
+    var addedCount = 0;
+    var skippedCount = 0;
+
+    // ✅ إضافة البوتات الجديدة على الموجودة (بدون حذف)
+    for (var bi = 0; bi < data.bots.length; bi++) {
+        var b = data.bots[bi];
+
+        // ✅ تخطّي البوتات المكررة (نفس التوكن)
+        if (existingTokens[b.token]) {
+            skippedCount++;
+            continue;
+        }
+
+        // ✅ فحص الحد الأقصى للبوتات
+        if (accounts.length >= MAX_BOTS) {
+            toast('تم الوصول للحد الأقصى للبوتات (' + MAX_BOTS + ')', 'e');
+            break;
+        }
+
+        // ✅ بناء القنوات
+        var channels = [];
+        if (b.channels) {
+            for (var ci = 0; ci < b.channels.length; ci++) {
+                var ch = b.channels[ci];
+                channels.push({
+                    slug: ch.slug,
+                    messages: ch.messages || '',
+                    interval: ch.interval || 5,
+                    repeat: ch.repeat || 1,
+                    isInfinite: !!ch.isInfinite,
+                    enabled: ch.enabled !== false,
+                    randomDelay: !!ch.randomDelay,
+                    delayMin: ch.delayMin || 3,
+                    delayMax: ch.delayMax || 7,
+                    randomMessages: !!ch.randomMessages,
+                    chatroomId: ch.chatroomId || null,
+                    verified: !!ch.verified,
+                    status: 'idle', sent: 0, error: '', retries: 0
+                });
+            }
+        }
+
+        // ✅ توليد ID جديد للبوت (لتجنب تعارض المعرفات)
+        accIdCounter++;
+        var bot = {
+            id: accIdCounter,
+            token: b.token,
+            username: b.username,
+            channels: channels,
+            autoRecover: true,
+            parallel: true,
+            isSending: false,
+            sent: 0,
+            workingProxy: (typeof b.workingProxy === 'number' && b.workingProxy >= 0) ? b.workingProxy : -1,
+            workingSendProxy: -1
+        };
+        accounts.push(bot);
+        existingTokens[b.token] = true; // ✅ منع التكرار داخل نفس الكود
+        addedCount++;
+    }
+
+    // ✅ حفظ وإعادة عرض
+    persist();
+    renderBotList();
+    if (typeof updateBulkUI === 'function') updateBulkUI();
+    closeTransferModal();
+
+    if (addedCount > 0) {
+        var msg = 'تم إضافة ' + addedCount + ' بوت بنجاح';
+        if (skippedCount > 0) msg += ' (تم تخطّي ' + skippedCount + ' بوت مكرر)';
+        toast(msg, 's');
+    } else if (skippedCount > 0) {
+        toast('كل البوتات في الكود مضافة مسبقاً (' + skippedCount + ' بوت)', 'i');
+    } else {
+        toast('لم يتم إضافة أي بوت', 'e');
+    }
 }
 
 function uToggleEnabled() {
