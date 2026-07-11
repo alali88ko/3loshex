@@ -28,7 +28,7 @@
         @keyframes gd2{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,-30px)}}
         @keyframes gd3{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.15)}}
 
-        /* ✅ شاشة الدخول النارية */
+        /* ✅ شاشة الدخول النارية — نسخة محسّنة بلمعان قوي ونيران */
         .splash {
             position:fixed; inset:0; z-index:9999;
             background:radial-gradient(ellipse at center,#1a0505 0%,#080404 70%);
@@ -38,23 +38,79 @@
         .splash.hide { opacity:0; pointer-events:none; }
         .splash canvas { position:absolute; inset:0; width:100%; height:100%; }
         .splash-content { position:relative; z-index:2; text-align:center; }
+
+        /* ✅ حلقة الشعار مع نيران حولها */
         .splash-ring {
-            position:relative; width:140px; height:140px; margin:0 auto 24px;
+            position:relative; width:160px; height:160px; margin:0 auto 24px;
         }
+        /* ✅ النيران حول الشعار — حلقة دوارة */
+        .splash-fire-ring {
+            position:absolute; inset:-18px; border-radius:50%; pointer-events:none;
+            background:conic-gradient(from 0deg,
+                rgba(255,45,45,0) 0deg,
+                rgba(255,45,45,0.8) 60deg,
+                rgba(255,184,0,0.7) 120deg,
+                rgba(255,107,26,0.8) 180deg,
+                rgba(255,45,45,0.7) 240deg,
+                rgba(255,184,0,0.6) 300deg,
+                rgba(255,45,45,0) 360deg);
+            filter:blur(14px); opacity:0;
+            animation:fireRingIn 1s ease 0.8s forwards, fireRingSpin 3s linear 1.8s infinite;
+        }
+        @keyframes fireRingIn{from{opacity:0;transform:scale(.5)}to{opacity:.75;transform:scale(1)}}
+        @keyframes fireRingSpin{from{transform:rotate(0) scale(1)}to{transform:rotate(360deg) scale(1)}}
+
+        /* ✅ الشعار مع لمعان قوي */
         .splash-logo {
-            width:80px; height:80px; position:absolute; top:50%; left:50%;
+            width:90px; height:90px; position:absolute; top:50%; left:50%;
             transform:translate(-50%,-50%);
-            animation:splashLogoIn 1.2s cubic-bezier(.16,1,.3,1) forwards, splashLogoPulse 1.5s ease-in-out 1.2s infinite;
+            animation:splashLogoIn 1.2s cubic-bezier(.16,1,.3,1) forwards;
         }
         @keyframes splashLogoIn{
             0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-360deg)}
             60%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(0)}
             100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}
         }
-        @keyframes splashLogoPulse{
-            0%,100%{filter:drop-shadow(0 0 8px rgba(255,45,45,0.6)) drop-shadow(0 0 20px rgba(255,107,26,0.4))}
-            50%{filter:drop-shadow(0 0 20px rgba(255,45,45,0.9)) drop-shadow(0 0 40px rgba(255,184,0,0.5))}
+        .splash-logo img {
+            animation:splashLogoShine 2s ease-in-out 1.2s infinite;
         }
+        @keyframes splashLogoShine{
+            0%,100%{
+                filter:drop-shadow(0 0 8px rgba(255,45,45,0.8)) drop-shadow(0 0 18px rgba(255,107,26,0.6)) drop-shadow(0 0 30px rgba(255,184,0,0.4)) brightness(1);
+            }
+            25%{
+                filter:drop-shadow(0 0 14px rgba(255,45,45,1)) drop-shadow(0 0 28px rgba(255,107,26,0.9)) drop-shadow(0 0 50px rgba(255,184,0,0.7)) brightness(1.3);
+            }
+            50%{
+                filter:drop-shadow(0 0 22px rgba(255,45,45,1)) drop-shadow(0 0 40px rgba(255,184,0,0.9)) drop-shadow(0 0 70px rgba(255,45,45,0.6)) brightness(1.5);
+            }
+            75%{
+                filter:drop-shadow(0 0 14px rgba(255,184,0,1)) drop-shadow(0 0 28px rgba(255,107,26,0.9)) drop-shadow(0 0 50px rgba(255,45,45,0.7)) brightness(1.3);
+            }
+        }
+
+        /* ✅ لمعان ساطع يمر على الشعار */
+        .splash-shine {
+            position:absolute; top:50%; left:50%;
+            width:90px; height:90px; transform:translate(-50%,-50%) rotate(45deg);
+            pointer-events:none; opacity:0; overflow:hidden;
+            border-radius:50%;
+            animation:splashShineSweep 3s ease-in-out 1.5s infinite;
+        }
+        .splash-shine::before {
+            content:''; position:absolute; top:-50%; left:-100%;
+            width:80%; height:200%;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);
+            transform:rotate(35deg);
+            filter:blur(2px);
+        }
+        @keyframes splashShineSweep{
+            0%{opacity:0;transform:translate(-50%,-50%) rotate(45deg) translateX(-150%)}
+            20%{opacity:0.9}
+            40%{opacity:0;transform:translate(-50%,-50%) rotate(45deg) translateX(150%)}
+            100%{opacity:0}
+        }
+
         .splash-lightning {
             position:absolute; inset:0; width:100%; height:100%;
             animation:splashLightning 2s ease-in-out infinite;
@@ -72,7 +128,11 @@
             font-size:42px; font-weight:900; letter-spacing:-1px;
             background:linear-gradient(135deg,#FF2D2D 0%,#FF6B1A 50%,#FFB800 100%);
             -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-            animation:splashNameIn 1s cubic-bezier(.16,1,.3,1) .5s forwards; opacity:0;
+            animation:splashNameIn 1s cubic-bezier(.16,1,.3,1) .5s forwards, splashNameGlow 2s ease-in-out 1.5s infinite; opacity:0;
+        }
+        @keyframes splashNameGlow{
+            0%,100%{filter:drop-shadow(0 0 6px rgba(255,45,45,0.5))}
+            50%{filter:drop-shadow(0 0 14px rgba(255,184,0,0.8))}
         }
         @keyframes splashNameIn{0%{opacity:0;transform:translateY(20px) scale(.8)}100%{opacity:1;transform:translateY(0) scale(1)}}
         .splash-bar {
@@ -98,8 +158,22 @@
             gap:0;
         }
         .app-header {
-            display:flex; align-items:center; gap:12px; margin-bottom:24px; width:100%;
+            display:flex; align-items:center; gap:8px; margin-bottom:24px; width:100%;
+            flex-wrap:wrap;
         }
+        .app-header .header-toggle {
+            display:flex; align-items:center; gap:6px;
+            padding:4px 10px; border-radius:9px;
+            background:rgba(255,255,255,0.03); border:1px solid rgba(255,45,45,0.12);
+            cursor:pointer; transition:all .25s; flex-shrink:0;
+        }
+        .app-header .header-toggle:hover { border-color:rgba(255,45,45,0.3); background:rgba(255,45,45,0.05); }
+        .app-header .header-toggle .ht-label { font-size:10px; font-weight:700; white-space:nowrap; }
+        .app-header .header-toggle .toggle { width:30px; height:18px; border-radius:9px; }
+        .app-header .header-toggle .toggle::after { width:14px; height:14px; top:1px; }
+        html[dir="rtl"] .app-header .header-toggle .toggle::after { right:1px; }
+        html[dir="rtl"] .app-header .header-toggle .toggle.on::after { right:14px; }
+        .app-header .header-toggle .toggle.on::after { left:14px; }
         .logo-img {
             width:48px; height:48px; border-radius:12px; object-fit:cover;
             box-shadow:0 0 20px rgba(255,45,45,0.25),0 0 40px rgba(255,45,45,0.1);
@@ -146,6 +220,7 @@
         .btn-ghost:hover:not(:disabled) { background:rgba(255,255,255,0.06); border-color:rgba(255,45,45,0.25); }
         .btn-sm { padding:10px 16px; font-size:13px; }
         .btn-xs { padding:6px 12px; font-size:12px; border-radius:8px; }
+        .btn-xxs { padding:4px 8px; font-size:11px; border-radius:6px; line-height:1; }
         .btn-full { width:100%; }
         .field { margin-bottom:16px; }
         .fire-divider { height:1px; background:linear-gradient(90deg,transparent,rgba(255,45,45,0.2),rgba(255,107,26,0.3),rgba(255,45,45,0.2),transparent); margin:18px 0; }
@@ -552,14 +627,6 @@
 
         <div id="unifiedFields" style="display:none;margin-top:8px">
 
-            <div class="toggle-row">
-                <div class="toggle-label">
-                    <div class="tlicon"><i class="fas fa-tower-broadcast"></i></div>
-                    <div><span>الإرسال فقط للبث المباشر</span></div>
-                </div>
-                <div class="toggle" id="uTgLiveOnly" onclick="uToggleLiveOnly()"></div>
-            </div>
-
             <div class="modal-field">
                 <label><i class="fas fa-comment-dots"></i> الرسائل</label>
                 <textarea id="uMessages" placeholder="رسالة في كل سطر"></textarea>
@@ -654,6 +721,30 @@
         </div>
         <div class="modal-actions" style="margin-top:5px">
             <button class="btn btn-fire" onclick="importTransferCode()"><i class="fas fa-download"></i> استيراد البيانات</button>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ نافذة تجديد التوكن -->
+<div class="modal-overlay" id="renewTokenModal" onclick="if(event.target===this)closeRenewToken()">
+    <div class="modal">
+        <div class="modal-x" onclick="closeRenewToken()" title="إغلاق"><i class="fas fa-xmark"></i></div>
+        <div class="modal-head">
+            <div class="modal-icon"><i class="fas fa-rotate"></i></div>
+            <div class="modal-title" id="renewTokenTitle">تجديد التوكن</div>
+        </div>
+
+        <div class="modal-divider"></div>
+
+        <div class="modal-field">
+            <label><i class="fas fa-key" style="color:var(--accent);font-size:11px"></i> التوكن الجديد</label>
+            <input type="password" id="renewTokenInput" placeholder="Bearer Token..." onkeydown="if(event.key==='Enter'){event.preventDefault();doRenewToken();}">
+        </div>
+        <div id="renewTokenStatus" style="text-align:center;font-size:12px;min-height:18px;margin-bottom:8px"></div>
+
+        <div class="modal-actions">
+            <button class="btn btn-fire" id="btnRenewToken" onclick="doRenewToken()"><i class="fas fa-check"></i> تجديد</button>
+            <button class="btn btn-ghost" onclick="closeRenewToken()"><i class="fas fa-xmark"></i> إلغاء</button>
         </div>
     </div>
 </div>
@@ -782,14 +873,16 @@
 <div class="app-container">
 
     <!-- شاشة التحميل -->
-    <!-- ✅ شاشة الدخول النارية -->
+    <!-- ✅ شاشة الدخول النارية — بلمعان قوي ونيران دوارة -->
     <div class="splash" id="splash">
         <canvas id="splashFire"></canvas>
         <div class="splash-content">
             <div class="splash-ring">
+                <div class="splash-fire-ring"></div>
                 <div class="splash-logo">
                     <img src="https://z-cdn-media.chatglm.cn/files/ab46995c-be54-4f0c-97d9-dc9965e3150b.png?auth_key=1881547846-5faaad2376f94647ae1522c3a0360a5e-0-48bb8eb6d9136f1963f04a687018a6a3" alt="RedKick" style="width:100%;height:100%;object-fit:cover;border-radius:50%;outline:2px solid #000;border:3px solid #000;box-shadow:0 0 0 1px #000,0 0 20px rgba(255,45,45,0.6)">
                 </div>
+                <div class="splash-shine"></div>
                 <svg class="splash-lightning" viewBox="0 0 200 200">
                     <path d="M100 5 L95 60 L105 55 L90 120 L100 110 L80 195" fill="none" stroke="#FF2D2D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
                     <path d="M100 5 L105 60 L95 55 L110 120 L100 110 L120 195" fill="none" stroke="#FFB800" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
@@ -839,6 +932,12 @@
             <button class="btn btn-ghost btn-xs" onclick="openUnifiedSettings()" title="إعدادات موحدة لكل القنوات" style="flex-shrink:0"><i class="fas fa-screwdriver-wrench"></i></button>
             <button class="btn btn-ghost btn-xs" onclick="openTransferModal()" title="نقل البيانات بين الأجهزة" style="flex-shrink:0"><i class="fas fa-share-nodes"></i></button>
             <button class="btn btn-fire btn-xs" onclick="openQuickSend()" title="إرسال رسالة مباشرة" style="flex-shrink:0"><i class="fas fa-paper-plane"></i></button>
+            <!-- ✅ زر الإرسال لغير المباشر — مستقل عن الإعدادات الموحدة -->
+            <div class="header-toggle" onclick="toggleSendToNonLive()" title="عند التفعيل: ترسل لكل القنوات (مباشر وغير مباشر). عند الإيقاف: ترسل فقط للبث المباشر">
+                <i class="fas fa-tower-broadcast" style="color:var(--accent);font-size:10px"></i>
+                <span class="ht-label">غير مباشر</span>
+                <div class="toggle" id="tgSendNonLive"></div>
+            </div>
         </div>
 
         <div class="bot-list" id="botList"></div>
@@ -892,8 +991,8 @@ var PROXIES = [
 ];
 
 // ✅ الحدود القصوى لتفادي اللاغ
-var MAX_BOTS = 15;
-var MAX_CHANNELS_PER_BOT = 15;
+var MAX_BOTS = 30;
+var MAX_CHANNELS_PER_BOT = 30;
 
 // ✅ نظام Throttling قوي لتحديثات UI — يمنع اللاغ تماماً
 var _uiUpdatePending = false;
@@ -1469,9 +1568,13 @@ function findChannel(bot, slug) {
 }
 
 // ✅ الإعدادات الموحدة لكل القنوات
+// ✅ sendToNonLive: false (افتراضي) = البوتات ترسل فقط للبث المباشر
+// ✅ sendToNonLive: true = البوتات ترسل لكل القنوات (مباشر + غير مباشر)
+// ✅ ملاحظة: sendToNonLive أصبحت متغيراً عالمياً مستقلاً عن unifiedSettings.enabled
+var sendToNonLive = false;
+
 var unifiedSettings = {
     enabled: false,
-    onlyLiveStreams: false,
     messages: '',
     interval: 5,
     repeat: 1,
@@ -1481,6 +1584,27 @@ var unifiedSettings = {
     delayMax: 7,
     randomMessages: false
 };
+
+// ✅ تحميل حالة sendToNonLive من localStorage
+var SEND_NON_LIVE_KEY = 'redkick_send_non_live_v1';
+function loadSendToNonLive() {
+    try {
+        var v = localStorage.getItem(SEND_NON_LIVE_KEY);
+        if (v !== null) sendToNonLive = (v === '1' || v === 'true');
+    } catch(e) {}
+}
+function saveSendToNonLive() {
+    try { localStorage.setItem(SEND_NON_LIVE_KEY, sendToNonLive ? '1' : '0'); } catch(e) {}
+}
+
+// ✅ تبديل حالة الإرسال لغير المباشر — مستقل عن الإعدادات الموحدة
+function toggleSendToNonLive() {
+    sendToNonLive = !sendToNonLive;
+    setToggle('tgSendNonLive', sendToNonLive);
+    saveSendToNonLive();
+    playToggleSound(sendToNonLive);
+    toast(sendToNonLive ? 'تم تفعيل الإرسال لغير المباشر — كل القنوات' : 'تم تفعيل الإرسال للبث المباشر فقط', 'i');
+}
 
 function getEffectiveChannelSettings(ch) {
     if (unifiedSettings.enabled) {
@@ -1493,10 +1617,10 @@ function getEffectiveChannelSettings(ch) {
             delayMin: unifiedSettings.delayMin,
             delayMax: unifiedSettings.delayMax,
             randomMessages: unifiedSettings.randomMessages,
-            onlyLiveStreams: unifiedSettings.onlyLiveStreams
+            sendToNonLive: sendToNonLive
         };
     }
-    ch.onlyLiveStreams = false;
+    ch.sendToNonLive = sendToNonLive;
     return ch;
 }
 
@@ -1511,7 +1635,6 @@ function openUnifiedSettings() {
     setToggle('uTgInfinite', unifiedSettings.isInfinite);
     setToggle('uTgRandomDelay', unifiedSettings.randomDelay);
     setToggle('uTgRandomMessages', unifiedSettings.randomMessages);
-    setToggle('uTgLiveOnly', unifiedSettings.onlyLiveStreams);
     $('unifiedFields').style.display = unifiedSettings.enabled ? 'block' : 'none';
     $('uRandomDelayFields').style.display = unifiedSettings.randomDelay ? 'flex' : 'none';
     var uIntervalWrap = $('uIntervalWrap');
@@ -1761,6 +1884,7 @@ function uToggleEnabled() {
     unifiedSettings.enabled = !unifiedSettings.enabled;
     setToggle('tgUnifiedEnabled', unifiedSettings.enabled);
     $('unifiedFields').style.display = unifiedSettings.enabled ? 'block' : 'none';
+    playToggleSound(unifiedSettings.enabled);
 }
 
 function uToggleInfinite() {
@@ -1769,6 +1893,7 @@ function uToggleInfinite() {
     $('uRepeat').disabled = unifiedSettings.isInfinite;
     if (unifiedSettings.isInfinite) $('uRepeat').value = 0;
     else if ($('uRepeat').value == 0) $('uRepeat').value = 1;
+    playToggleSound(unifiedSettings.isInfinite);
 }
 
 function uToggleRandomDelay() {
@@ -1780,16 +1905,13 @@ function uToggleRandomDelay() {
         uIntervalWrap.style.opacity = unifiedSettings.randomDelay ? '0.35' : '1';
         uIntervalWrap.style.pointerEvents = unifiedSettings.randomDelay ? 'none' : 'auto';
     }
+    playToggleSound(unifiedSettings.randomDelay);
 }
 
 function uToggleRandomMessages() {
     unifiedSettings.randomMessages = !unifiedSettings.randomMessages;
     setToggle('uTgRandomMessages', unifiedSettings.randomMessages);
-}
-
-function uToggleLiveOnly() {
-    unifiedSettings.onlyLiveStreams = !unifiedSettings.onlyLiveStreams;
-    setToggle('uTgLiveOnly', unifiedSettings.onlyLiveStreams);
+    playToggleSound(unifiedSettings.randomMessages);
 }
 
 function saveUnifiedSettings() {
@@ -1803,7 +1925,6 @@ function saveUnifiedSettings() {
     unifiedSettings.isInfinite = $('uTgInfinite').classList.contains('on');
     unifiedSettings.randomDelay = $('uTgRandomDelay').classList.contains('on');
     unifiedSettings.randomMessages = $('uTgRandomMessages').classList.contains('on');
-    unifiedSettings.onlyLiveStreams = $('uTgLiveOnly').classList.contains('on');
     var rv = parseInt($('uRepeat').value) || 1;
     unifiedSettings.repeat = unifiedSettings.isInfinite ? 0 : Math.max(1, rv);
     try { localStorage.setItem('redkick_unified_v1', JSON.stringify(unifiedSettings)); } catch(e) {}
@@ -1819,7 +1940,6 @@ function loadUnifiedSettings() {
         var data = JSON.parse(raw);
         if (data) {
             unifiedSettings.enabled = !!data.enabled;
-            unifiedSettings.onlyLiveStreams = !!data.onlyLiveStreams;
             unifiedSettings.messages = data.messages || '';
             unifiedSettings.interval = data.interval || 5;
             unifiedSettings.repeat = data.repeat || 1;
@@ -2144,6 +2264,108 @@ function loadFromStorage() {
 }
 
 // ═══════════════════════════════════════
+//  ✅ أصوات الأزرار — نظام صوتي موحّد
+// ═══════════════════════════════════════
+var _btnAudioCtx = null;
+function _getBtnAudioCtx() {
+    if (!_btnAudioCtx) {
+        try { _btnAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+    }
+    // ✅ استئناف الـ context إن كان معلّقاً (سياسة المتصفح)
+    if (_btnAudioCtx && _btnAudioCtx.state === 'suspended') {
+        try { _btnAudioCtx.resume(); } catch(e) {}
+    }
+    return _btnAudioCtx;
+}
+
+// ✅ صوت النقر العادي — قصير وحاد
+function playClickSound() {
+    try {
+        var ctx = _getBtnAudioCtx();
+        if (!ctx) return;
+        var now = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(900, now);
+        osc.frequency.exponentialRampToValueAtTime(450, now + 0.06);
+        var gain = ctx.createGain();
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.08, now + 0.005);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.12);
+    } catch(e) {}
+}
+
+// ✅ صوت التأكيد/النجاح — نغمتان صاعدتان
+function playSuccessSound() {
+    try {
+        var ctx = _getBtnAudioCtx();
+        if (!ctx) return;
+        var now = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(660, now);
+        osc.frequency.setValueAtTime(880, now + 0.08);
+        var gain = ctx.createGain();
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.1, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.3);
+    } catch(e) {}
+}
+
+// ✅ صوت الخطأ — نغمتان هابطتان
+function playErrorSound() {
+    try {
+        var ctx = _getBtnAudioCtx();
+        if (!ctx) return;
+        var now = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.setValueAtTime(220, now + 0.12);
+        var gain = ctx.createGain();
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.07, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.32);
+    } catch(e) {}
+}
+
+// ✅ صوت التبديل (toggle) — نقرة + طنين خفيف
+function playToggleSound(on) {
+    try {
+        var ctx = _getBtnAudioCtx();
+        if (!ctx) return;
+        var now = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        osc.type = 'square';
+        // نغمة عالية عند التشغيل، منخفضة عند الإيقاف
+        osc.frequency.setValueAtTime(on ? 880 : 440, now);
+        var gain = ctx.createGain();
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.06, now + 0.005);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.14);
+    } catch(e) {}
+}
+
+// ✅ مستمع عام: أي عنصر يحمل data-sound="click" يشغّل صوت النقر
+document.addEventListener('click', function(e) {
+    var t = e.target;
+    // ✅ ابحث عن أقرب عنصر بصلاحية النقر (button أو [onclick])
+    var el = t.closest('button, [onclick], .toggle, .header-toggle, .bot-checkbox');
+    if (!el) return;
+    // ✅ استثنِ النقرات على عناصر داخل نص الإدخال
+    if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA') return;
+    playClickSound();
+}, true);
+
+// ═══════════════════════════════════════
 //  واجهة المستخدم
 // ═══════════════════════════════════════
 function showPhase(name) {
@@ -2152,6 +2374,9 @@ function showPhase(name) {
 }
 
 function toast(msg, type) {
+    // ✅ صوت حسب نوع الرسالة
+    if (type === 's') playSuccessSound();
+    else if (type === 'e') playErrorSound();
     var t = document.createElement('div');
     t.className = 'toast toast-' + (type || 'i');
     t.textContent = msg;
@@ -2235,6 +2460,123 @@ function goAddToken() {
 }
 
 // ═══════════════════════════════════════
+//  ✅ تجديد التوكن — يحل التوكن الجديد محل القديم مع الإبقاء على كل الإعدادات
+// ═══════════════════════════════════════
+var renewTokenBotId = null;
+
+function openRenewToken(id) {
+    var b = findBot(id);
+    if (!b) return;
+    renewTokenBotId = id;
+    $('renewTokenTitle').textContent = 'تجديد التوكن: ' + b.username;
+    $('renewTokenInput').value = '';
+    $('renewTokenStatus').innerHTML = '';
+    $('btnRenewToken').disabled = false;
+    $('btnRenewToken').innerHTML = '<i class="fas fa-check"></i> تجديد';
+    $('renewTokenModal').classList.add('open');
+    setTimeout(function(){ $('renewTokenInput').focus(); }, 100);
+}
+
+function closeRenewToken() {
+    $('renewTokenModal').classList.remove('open');
+    renewTokenBotId = null;
+}
+
+async function doRenewToken() {
+    if (renewTokenBotId === null) return;
+    var b = findBot(renewTokenBotId);
+    if (!b) { closeRenewToken(); return; }
+
+    var newToken = $('renewTokenInput').value.trim();
+    if (!newToken) { toast('أدخل التوكن الجديد', 'e'); return; }
+    if (newToken.toLowerCase().startsWith('bearer ')) newToken = newToken.substring(7).trim();
+
+    // ✅ منع استخدام نفس التوكن القديم
+    if (newToken === b.token) {
+        toast('التوكن الجديد مطابق للقديم', 'e');
+        return;
+    }
+
+    // ✅ منع استخدام توكن موجود لبوت آخر
+    for (var i = 0; i < accounts.length; i++) {
+        if (accounts[i].id !== b.id && accounts[i].token === newToken) {
+            toast('هذا التوكن مستخدم لبوت آخر: ' + accounts[i].username, 'e');
+            return;
+        }
+    }
+
+    var btn = $('btnRenewToken');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-sm"></span>';
+    $('renewTokenStatus').innerHTML = '<span style="color:var(--muted)"><i class="fas fa-spinner fa-spin"></i> جارٍ التحقق من التوكن...</span>';
+
+    try {
+        // ✅ فحص التوكن الجديد تماماً كإضافة بوت جديد
+        var pr = null;
+        var endpoints = ['/api/v1/user', '/api/v2/user'];
+        for (var ei = 0; ei < endpoints.length && (!pr || !pr.res.ok); ei++) {
+            try { pr = await proxiedFetch(endpoints[ei], {token:newToken, timeout:6000}); } catch(e) { continue; }
+        }
+        if (!pr) throw new Error('فشل الاتصال — تحقق من الإنترنت');
+        if (!pr.res.ok) {
+            if (pr.res.status===401||pr.res.status===403) throw new Error('التوكن غير صالح');
+            throw new Error('خطأ HTTP: '+pr.res.status);
+        }
+        var raw = await pr.res.text(); var data;
+        try { data = JSON.parse(raw); } catch(e) { throw new Error('الخادم لم يُرجع بيانات صالحة'); }
+
+        var username = data.username || (data.user && data.user.username) || (data.data && data.data.username) || data.slug || data.name || null;
+        if (!username && !data.id) throw new Error('لم يتم العثور على بيانات الحساب');
+        var displayName = username || ('حساب #' + (data.id || '?'));
+
+        // ✅ إيقاف البوت أولاً إن كان يعمل
+        if (b.isSending) {
+            b.isSending = false;
+            if (abortControllers[b.id]) abortControllers[b.id].abort();
+        }
+
+        // ✅ حفظ نسخة من الإعدادات القديمة (القنوات + كل التفاصيل)
+        var oldChannels = b.channels;
+        var oldSent = b.sent;
+        var oldSelected = !!selectedBots[b.id];
+
+        // ✅ تحديث التوكن والاسم فقط — مع الإبقاء على كل الإعدادات
+        b.token = newToken;
+        b.username = displayName;
+        b.workingProxy = pr.proxyUsed;
+        // ✅ إعادة ضبط حالة الإرسال
+        b.isSending = false;
+        b.sent = oldSent; // ✅ الحفاظ على العداد التراكمي
+        b.workingSendProxy = -1;
+
+        // ✅ إعادة ضبط حالة كل قناة (لإعادة التحقق عند الإرسال إن لزم)
+        for (var ci = 0; ci < b.channels.length; ci++) {
+            b.channels[ci].status = 'idle';
+            b.channels[ci].error = '';
+            b.channels[ci].retries = 0;
+            b.channels[ci].sent = 0;
+            // ✅ الحفاظ على chatroom_id و verified إن وُجدت
+        }
+
+        persist();
+        renderBotList();
+
+        $('renewTokenStatus').innerHTML = '<span style="color:var(--success)"><i class="fas fa-check-circle"></i> تم تجديد التوكن — ' + escH(displayName) + '</span>';
+        toast('تم تجديد التوكن بنجاح', 's');
+
+        // ✅ إغلاق النافذة بعد فترة قصيرة
+        setTimeout(function() { closeRenewToken(); }, 1200);
+
+    } catch(e) {
+        $('renewTokenStatus').innerHTML = '<span style="color:var(--danger)"><i class="fas fa-xmark-circle"></i> ' + escH(e.message) + '</span>';
+        toast(e.message, 'e');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> تجديد';
+    }
+}
+
+// ═══════════════════════════════════════
 //  عرض قائمة البوتات
 // ═══════════════════════════════════════
 function renderBotList() {
@@ -2273,8 +2615,9 @@ function renderBotList() {
         html += '</div></div>';
         // الأزرار على اليسار
         html += '<div class="bot-actions">';
-        html += '<button class="btn btn-fire btn-xs" onclick="openSettings('+b.id+')" title="إعدادات"><i class="fas fa-gear"></i></button>';
-        html += '<button class="btn btn-ghost btn-xs" onclick="removeBot('+b.id+')" title="حذف"><i class="fas fa-trash"></i></button>';
+        html += '<button class="btn btn-ghost btn-xxs" onclick="openRenewToken('+b.id+')" title="تجديد التوكن"><i class="fas fa-rotate"></i></button>';
+        html += '<button class="btn btn-fire btn-xxs" onclick="openSettings('+b.id+')" title="إعدادات"><i class="fas fa-gear"></i></button>';
+        html += '<button class="btn btn-ghost btn-xxs" onclick="removeBot('+b.id+')" title="حذف"><i class="fas fa-trash"></i></button>';
         html += '</div>';
         html += '</div>';
     }
@@ -2286,8 +2629,10 @@ function renderBotList() {
 //  التحديد
 // ═══════════════════════════════════════
 function toggleSelect(id) {
+    var newState = !selectedBots[id];
     if (selectedBots[id]) delete selectedBots[id];
     else selectedBots[id] = true;
+    playToggleSound(newState);
     persist();
     renderBotList();
 }
@@ -2388,6 +2733,7 @@ function mToggle(toggleId, fieldName) {
     if (!b) return;
     b[fieldName] = !b[fieldName];
     setToggle(toggleId, b[fieldName]);
+    playToggleSound(b[fieldName]);
     persist();
 }
 
@@ -2602,6 +2948,7 @@ function cToggleInfinite() {
     $('cRepeat').disabled = ch.isInfinite;
     if (ch.isInfinite) $('cRepeat').value = 0;
     else if ($('cRepeat').value == 0) $('cRepeat').value = 1;
+    playToggleSound(ch.isInfinite);
     persist();
 }
 
@@ -2619,6 +2966,7 @@ function cToggleRandomDelay() {
         cIntervalWrap.style.opacity = ch.randomDelay ? '0.35' : '1';
         cIntervalWrap.style.pointerEvents = ch.randomDelay ? 'none' : 'auto';
     }
+    playToggleSound(ch.randomDelay);
     persist();
 }
 
@@ -2630,6 +2978,7 @@ function cToggleRandomMessages() {
     if (!ch) return;
     ch.randomMessages = !ch.randomMessages;
     setToggle('tgRandomMessages', ch.randomMessages);
+    playToggleSound(ch.randomMessages);
     persist();
 }
 
@@ -2970,8 +3319,10 @@ async function runChannelOnce(bot, ch, eff, msgs, interval, infinite, repeatCoun
     var sig = function() { return abortControllers[bot.id] ? abortControllers[bot.id].signal : undefined; };
 
     // ✅ فحص البث المباشر — يرجع true (تبث), false (أوفلاين), true (فشل الفحص - لا يوقف)
+    // ✅ السلوك الافتراضي: البوتات ترسل فقط للبث المباشر
+    // ✅ إذا sendToNonLive=true: تخطّى فحص البث وأرسل لكل القنوات
     async function checkLiveNow() {
-        if (!eff.onlyLiveStreams) return true;
+        if (eff.sendToNonLive) return true;
         var now = Date.now();
         // لا تفحص أكثر من مرة كل 30 ثانية لتفادي الحمل
         if (now - lastLiveCheck < 30000 && ch.isLive !== undefined) {
@@ -3021,8 +3372,8 @@ async function runChannelOnce(bot, ch, eff, msgs, interval, infinite, repeatCoun
         return false;
     }
 
-    // ✅ فحص أولي قبل بدء الإرسال
-    if (eff.onlyLiveStreams) {
+    // ✅ فحص أولي قبل بدء الإرسال (السلوك الافتراضي: فقط للبث المباشر)
+    if (!eff.sendToNonLive) {
         var isLive = await checkLiveNow();
         if (!isLive) {
             var resumed = await waitForLive();
@@ -3039,8 +3390,8 @@ async function runChannelOnce(bot, ch, eff, msgs, interval, infinite, repeatCoun
         }
         if (!infinite && roundNum >= repeatCount) break;
 
-        // ✅ فحص البث المباشر قبل كل دورة رسائل (كل 30 ثانية كحد أقصى)
-        if (eff.onlyLiveStreams) {
+        // ✅ فحص البث المباشر قبل كل دورة رسائل (السلوك الافتراضي: فقط للبث المباشر)
+        if (!eff.sendToNonLive) {
             var liveNow = await checkLiveNow();
             if (!liveNow) {
                 // القناة أوفلاين — انتظر عودة البث
@@ -3074,8 +3425,8 @@ async function runChannelOnce(bot, ch, eff, msgs, interval, infinite, repeatCoun
             return;
         }
 
-        // ✅ فحص البث المباشر قبل كل رسالة (كل 30 ثانية كحد أقصى)
-        if (eff.onlyLiveStreams) {
+        // ✅ فحص البث المباشر قبل كل رسالة (السلوك الافتراضي: فقط للبث المباشر)
+        if (!eff.sendToNonLive) {
             var stillLive = await checkLiveNow();
             if (!stillLive) {
                 // القناة أوفلاين — انتظر عودة البث
@@ -3293,6 +3644,8 @@ async function init() {
     loadBestProxy(); // ✅ استعادة البروكسي الأفضل من الجلسة السابقة
     loadFromStorage();
     loadUnifiedSettings();
+    loadSendToNonLive(); // ✅ استعادة حالة زر الإرسال لغير المباشر
+    setToggle('tgSendNonLive', sendToNonLive); // ✅ ضبط الزر في الترويسة
     try { NetworkGuard.start(); } catch(e) {}
     fetchXsrf().catch(function(){});
     // ✅ تسخين البروكسيات مبكراً — يجد بروكسي شغال قبل أن يحاول المستخدم إضافة قناة
