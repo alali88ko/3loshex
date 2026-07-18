@@ -232,39 +232,6 @@
             font-size:11px; line-height:1.7; color:var(--fg); opacity:.85;
             padding-right:20px;
         }
-
-        /* ✅ حاويات الإعلانات */
-        .ad-container {
-            display:flex; justify-content:center; align-items:center;
-            margin:14px 0; padding:8px;
-            background:rgba(255,255,255,0.02);
-            border:1px solid rgba(255,45,45,0.08);
-            border-radius:10px;
-            min-height:60px;
-            overflow:hidden;
-        }
-        .ad-container.ad-banner { margin:10px 0; }
-        .ad-container.ad-sidebar {
-            position:fixed; top:50%; transform:translateY(-50%);
-            z-index:5;
-        }
-        .ad-container.ad-sidebar.left { left:6px; }
-        .ad-container.ad-sidebar.right { right:6px; }
-        .ad-container.ad-footer {
-            margin:0 0 12px 0;
-            padding:6px;
-        }
-        .ad-container.ad-header {
-            margin:0 0 14px 0;
-        }
-        .ad-label {
-            font-size:9px; color:var(--muted);
-            text-align:center; margin-bottom:4px;
-            letter-spacing:1px; text-transform:uppercase;
-        }
-        @media(max-width:560px){
-            .ad-container.ad-sidebar { display:none; }
-        }
         .app-header {
             display:flex; align-items:center; gap:8px; margin-bottom:24px; width:100%;
             flex-wrap:wrap;
@@ -1083,21 +1050,6 @@
             </button>
             <div class="back-title">إضافة بوت</div>
         </div>
-
-        <!-- ✅ إعلان 4: عمودي صغير (160×300) -->
-        <div class="ad-container">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '23f0f9295f6d83441507b386f05736e7',
-                    'format' : 'iframe',
-                    'height' : 300,
-                    'width' : 160,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="https://performanceingredientgoblet.com/23f0f9295f6d83441507b386f05736e7/invoke.js"></script>
-        </div>
-
         <div class="card">
             <div style="text-align:center;margin-bottom:20px">
                 <img src="https://z-cdn-media.chatglm.cn/files/ab46995c-be54-4f0c-97d9-dc9965e3150b.png?auth_key=1881547846-5faaad2376f94647ae1522c3a0360a5e-0-48bb8eb6d9136f1963f04a687018a6a3" alt="RedKick" style="width:72px;height:72px;object-fit:cover;border-radius:50%;outline:none;border:2px solid #000;box-shadow:0 0 0 2px #000,0 0 15px rgba(255,45,45,0.4)">
@@ -1113,38 +1065,10 @@
             </div>
             <div id="tokenStatus" style="text-align:center;font-size:13px;min-height:20px"></div>
         </div>
-
-        <!-- ✅ إعلان 5: بانر سفلي لصفحة الإضافة (468×60) -->
-        <div class="ad-container ad-footer">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '7345e7ee3be0682c38749eb651914847',
-                    'format' : 'iframe',
-                    'height' : 60,
-                    'width' : 468,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="https://performanceingredientgoblet.com/7345e7ee3be0682c38749eb651914847/invoke.js"></script>
-        </div>
     </div>
 
     <!-- قائمة البوتات (الواجهة الرئيسية) -->
     <div class="phase" id="ph-main">
-        <!-- ✅ إعلان 1: بانر علوي (468×60) -->
-        <div class="ad-container ad-header">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '7345e7ee3be0682c38749eb651914847',
-                    'format' : 'iframe',
-                    'height' : 60,
-                    'width' : 468,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="https://performanceingredientgoblet.com/7345e7ee3be0682c38749eb651914847/invoke.js"></script>
-        </div>
-
         <div class="app-header">
             <div class="logo-img" style="background:url('https://z-cdn-media.chatglm.cn/files/ab46995c-be54-4f0c-97d9-dc9965e3150b.png?auth_key=1881547846-5faaad2376f94647ae1522c3a0360a5e-0-48bb8eb6d9136f1963f04a687018a6a3') center/cover no-repeat;border-radius:50%;outline:none;border:2px solid #000;box-shadow:0 0 0 2px #000,0 0 8px rgba(255,45,45,0.3)"></div>
             <div style="flex:1">
@@ -1164,20 +1088,6 @@
 
         <div class="bot-list" id="botList"></div>
 
-        <!-- ✅ إعلان 2: مستطيل متوسط (300×250) بين قائمة البوتات والأزرار -->
-        <div class="ad-container">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '31965395ddec1e289f05c8f6e9a1bced',
-                    'format' : 'iframe',
-                    'height' : 250,
-                    'width' : 300,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="https://performanceingredientgoblet.com/31965395ddec1e289f05c8f6e9a1bced/invoke.js"></script>
-        </div>
-
         <div class="selection-info" id="selectionInfo">المحدد: <span class="count">0</span> بوت</div>
 
         <div class="bulk-bar">
@@ -1189,20 +1099,6 @@
             <button class="btn btn-ghost btn-sm" onclick="selectAllBots()"><i class="fas fa-check-double"></i> تحديد الكل</button>
             <button class="btn btn-ghost btn-sm" onclick="clearSelection()" id="btnClearSel" disabled><i class="fas fa-xmark"></i> مسح التحديد</button>
             <button class="btn btn-ghost btn-sm" onclick="goAddToken()"><i class="fas fa-plus"></i> إضافة</button>
-        </div>
-
-        <!-- ✅ إعلان 3: بانر سفلي (728×90) -->
-        <div class="ad-container ad-footer">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : 'e0da7a0652496d2591a2f9c78f70ed5a',
-                    'format' : 'iframe',
-                    'height' : 90,
-                    'width' : 728,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="https://performanceingredientgoblet.com/e0da7a0652496d2591a2f9c78f70ed5a/invoke.js"></script>
         </div>
 
         <div class="progress-wrap" id="progWrap" style="display:none;margin-top:14px">
@@ -1221,7 +1117,7 @@
 
 <!-- ✅ زر المعلومات في الزاوية العلوية -->
 <button class="info-fab" onclick="openInfoModal()" title="معلومات الموقع">
-    <span style="font-size:18px; line-height:1;">📋</span>
+    <i class="fas fa-info"></i>
 </button>
 
 <!-- ✅ نافذة المعلومات الشاملة -->
@@ -1347,37 +1243,6 @@
             </div>
         </div>
     </div>
-</div>
-
-<!-- ═══════════════════════════════════════ -->
-<!-- ✅ إعلانات إضافية (popup, native, sidebar) -->
-<!-- ═══════════════════════════════════════ -->
-
-<!-- ✅ إعلان 6: Popunder (رابط مباشر) -->
-<script type="text/javascript" src="https://performanceingredientgoblet.com/k6vcky9h?key=ea05a6325558a1a5be44282dc06f098c"></script>
-
-<!-- ✅ إعلان 7: Native banner -->
-<script type="text/javascript" src="https://performanceingredientgoblet.com/da/72/8c/da728c59df8ec875ee86966b8dc0ee63.js"></script>
-
-<!-- ✅ إعلان 8: Social bar -->
-<script type="text/javascript" src="https://performanceingredientgoblet.com/a3/63/f7/a363f7a4a6d4a353d9766a35f14ddaf3.js"></script>
-
-<!-- ✅ إعلان 9: Container ad (يظهر في حاوية محددة) -->
-<script async="async" data-cfasync="false" src="https://performanceingredientgoblet.com/82d791d02f77c8723bc257ca26f152f7/invoke.js"></script>
-<div id="container-82d791d02f77c8723bc257ca26f152f7" style="display:none;"></div>
-
-<!-- ✅ إعلان 10: عمودي كبير (160×600) — يظهر كشريط جانبي على الشاشات الكبيرة -->
-<div class="ad-container ad-sidebar right" style="display:none;">
-    <script type="text/javascript">
-        atOptions = {
-            'key' : 'ae7af43f740c21c092a32161b42be9da',
-            'format' : 'iframe',
-            'height' : 600,
-            'width' : 160,
-            'params' : {}
-        };
-    </script>
-    <script type="text/javascript" src="https://performanceingredientgoblet.com/ae7af43f740c21c092a32161b42be9da/invoke.js"></script>
 </div>
 
 <script>
