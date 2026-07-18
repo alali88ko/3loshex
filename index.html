@@ -158,6 +158,113 @@
         }
         .wa-phone-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(37,211,102,0.5); }
         .wa-phone-btn i { font-size:18px; }
+
+        /* ✅ زر المعلومات — في الزاوية العلوية */
+        .info-fab {
+            position:fixed; top:14px; left:14px; z-index:45;
+            width:38px; height:38px; border-radius:50%;
+            background:linear-gradient(135deg,#FF2D2D,#FF6B1A);
+            color:#fff; border:none; cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+            font-size:16px; font-weight:900; font-family:inherit;
+            box-shadow:0 4px 14px rgba(255,45,45,0.45), 0 0 0 1px rgba(255,255,255,0.1);
+            transition:all .25s;
+        }
+        .info-fab:hover { transform:scale(1.08); box-shadow:0 6px 20px rgba(255,45,45,0.6); }
+        .info-fab i { font-size:16px; }
+        .info-fab::before {
+            content:''; position:absolute; inset:-3px; border-radius:50%;
+            border:2px solid rgba(255,45,45,0.4); opacity:0;
+            animation:infoPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes infoPulse{
+            0%,100%{opacity:0;transform:scale(1)}
+            50%{opacity:.7;transform:scale(1.12)}
+        }
+
+        /* ✅ نافذة المعلومات */
+        .info-modal-body { padding:8px 4px; max-height:65vh; overflow-y:auto; }
+        .info-tabs {
+            display:flex; gap:4px; margin-bottom:12px;
+            flex-wrap:wrap; padding:4px; background:rgba(255,255,255,0.03);
+            border-radius:10px;
+        }
+        .info-tab {
+            flex:1; min-width:80px;
+            padding:8px 6px; border-radius:8px; cursor:pointer;
+            background:transparent; border:1px solid transparent;
+            color:var(--muted); font-size:11px; font-weight:700; font-family:inherit;
+            transition:all .2s; text-align:center;
+        }
+        .info-tab:hover { color:var(--fg); background:rgba(255,255,255,0.04); }
+        .info-tab.active {
+            background:linear-gradient(135deg,#FF2D2D,#FF6B1A);
+            color:#fff; border-color:var(--accent);
+            box-shadow:0 0 10px rgba(255,45,45,0.3);
+        }
+        .info-section { display:none; animation:infoFadeIn .35s ease; }
+        .info-section.active { display:block; }
+        @keyframes infoFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        .info-section h3 {
+            font-size:14px; font-weight:900; color:var(--accent);
+            margin-bottom:10px; padding-bottom:6px;
+            border-bottom:1px solid rgba(255,45,45,0.18);
+            display:flex; align-items:center; gap:6px;
+        }
+        .info-section h3 i { font-size:13px; }
+        .info-section p {
+            font-size:12px; line-height:1.8; color:var(--fg);
+            margin-bottom:10px; opacity:.92;
+        }
+        .info-section .qa-item {
+            background:rgba(255,255,255,0.025);
+            border:1px solid rgba(255,45,45,0.12);
+            border-radius:9px; padding:10px 12px; margin-bottom:8px;
+        }
+        .info-section .qa-item .qa-q {
+            font-size:12px; font-weight:700; color:var(--accent);
+            margin-bottom:5px; display:flex; gap:6px; align-items:flex-start;
+        }
+        .info-section .qa-item .qa-q::before {
+            content:'س:'; color:var(--accent3); font-weight:900; flex-shrink:0;
+        }
+        .info-section .qa-item .qa-a {
+            font-size:11px; line-height:1.7; color:var(--fg); opacity:.85;
+            padding-right:20px;
+        }
+
+        /* ✅ حاويات الإعلانات */
+        .ad-container {
+            display:flex; justify-content:center; align-items:center;
+            margin:14px 0; padding:8px;
+            background:rgba(255,255,255,0.02);
+            border:1px solid rgba(255,45,45,0.08);
+            border-radius:10px;
+            min-height:60px;
+            overflow:hidden;
+        }
+        .ad-container.ad-banner { margin:10px 0; }
+        .ad-container.ad-sidebar {
+            position:fixed; top:50%; transform:translateY(-50%);
+            z-index:5;
+        }
+        .ad-container.ad-sidebar.left { left:6px; }
+        .ad-container.ad-sidebar.right { right:6px; }
+        .ad-container.ad-footer {
+            margin:0 0 12px 0;
+            padding:6px;
+        }
+        .ad-container.ad-header {
+            margin:0 0 14px 0;
+        }
+        .ad-label {
+            font-size:9px; color:var(--muted);
+            text-align:center; margin-bottom:4px;
+            letter-spacing:1px; text-transform:uppercase;
+        }
+        @media(max-width:560px){
+            .ad-container.ad-sidebar { display:none; }
+        }
         .app-header {
             display:flex; align-items:center; gap:8px; margin-bottom:24px; width:100%;
             flex-wrap:wrap;
@@ -976,6 +1083,21 @@
             </button>
             <div class="back-title">إضافة بوت</div>
         </div>
+
+        <!-- ✅ إعلان 4: عمودي صغير (160×300) -->
+        <div class="ad-container">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '23f0f9295f6d83441507b386f05736e7',
+                    'format' : 'iframe',
+                    'height' : 300,
+                    'width' : 160,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://performanceingredientgoblet.com/23f0f9295f6d83441507b386f05736e7/invoke.js"></script>
+        </div>
+
         <div class="card">
             <div style="text-align:center;margin-bottom:20px">
                 <img src="https://z-cdn-media.chatglm.cn/files/ab46995c-be54-4f0c-97d9-dc9965e3150b.png?auth_key=1881547846-5faaad2376f94647ae1522c3a0360a5e-0-48bb8eb6d9136f1963f04a687018a6a3" alt="RedKick" style="width:72px;height:72px;object-fit:cover;border-radius:50%;outline:none;border:2px solid #000;box-shadow:0 0 0 2px #000,0 0 15px rgba(255,45,45,0.4)">
@@ -991,10 +1113,38 @@
             </div>
             <div id="tokenStatus" style="text-align:center;font-size:13px;min-height:20px"></div>
         </div>
+
+        <!-- ✅ إعلان 5: بانر سفلي لصفحة الإضافة (468×60) -->
+        <div class="ad-container ad-footer">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '7345e7ee3be0682c38749eb651914847',
+                    'format' : 'iframe',
+                    'height' : 60,
+                    'width' : 468,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://performanceingredientgoblet.com/7345e7ee3be0682c38749eb651914847/invoke.js"></script>
+        </div>
     </div>
 
     <!-- قائمة البوتات (الواجهة الرئيسية) -->
     <div class="phase" id="ph-main">
+        <!-- ✅ إعلان 1: بانر علوي (468×60) -->
+        <div class="ad-container ad-header">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '7345e7ee3be0682c38749eb651914847',
+                    'format' : 'iframe',
+                    'height' : 60,
+                    'width' : 468,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://performanceingredientgoblet.com/7345e7ee3be0682c38749eb651914847/invoke.js"></script>
+        </div>
+
         <div class="app-header">
             <div class="logo-img" style="background:url('https://z-cdn-media.chatglm.cn/files/ab46995c-be54-4f0c-97d9-dc9965e3150b.png?auth_key=1881547846-5faaad2376f94647ae1522c3a0360a5e-0-48bb8eb6d9136f1963f04a687018a6a3') center/cover no-repeat;border-radius:50%;outline:none;border:2px solid #000;box-shadow:0 0 0 2px #000,0 0 8px rgba(255,45,45,0.3)"></div>
             <div style="flex:1">
@@ -1014,6 +1164,20 @@
 
         <div class="bot-list" id="botList"></div>
 
+        <!-- ✅ إعلان 2: مستطيل متوسط (300×250) بين قائمة البوتات والأزرار -->
+        <div class="ad-container">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '31965395ddec1e289f05c8f6e9a1bced',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://performanceingredientgoblet.com/31965395ddec1e289f05c8f6e9a1bced/invoke.js"></script>
+        </div>
+
         <div class="selection-info" id="selectionInfo">المحدد: <span class="count">0</span> بوت</div>
 
         <div class="bulk-bar">
@@ -1025,6 +1189,20 @@
             <button class="btn btn-ghost btn-sm" onclick="selectAllBots()"><i class="fas fa-check-double"></i> تحديد الكل</button>
             <button class="btn btn-ghost btn-sm" onclick="clearSelection()" id="btnClearSel" disabled><i class="fas fa-xmark"></i> مسح التحديد</button>
             <button class="btn btn-ghost btn-sm" onclick="goAddToken()"><i class="fas fa-plus"></i> إضافة</button>
+        </div>
+
+        <!-- ✅ إعلان 3: بانر سفلي (728×90) -->
+        <div class="ad-container ad-footer">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'e0da7a0652496d2591a2f9c78f70ed5a',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://performanceingredientgoblet.com/e0da7a0652496d2591a2f9c78f70ed5a/invoke.js"></script>
         </div>
 
         <div class="progress-wrap" id="progWrap" style="display:none;margin-top:14px">
@@ -1040,6 +1218,106 @@
     <i class="fab fa-whatsapp"></i>
     <span>تواصل معنا</span>
 </button>
+
+<!-- ✅ زر المعلومات في الزاوية العلوية -->
+<button class="info-fab" onclick="openInfoModal()" title="معلومات الموقع">
+    <span style="font-size:18px; line-height:1;">📋</span>
+</button>
+
+<!-- ✅ نافذة المعلومات الشاملة -->
+<div class="modal-overlay" id="infoModal" onclick="if(event.target===this)closeInfoModal()">
+    <div class="modal">
+        <div class="modal-x" onclick="closeInfoModal()" title="إغلاق"><i class="fas fa-xmark"></i></div>
+        <div class="modal-head">
+            <div class="modal-icon"><i class="fas fa-circle-info"></i></div>
+            <div class="modal-title">معلومات الموقع</div>
+        </div>
+        <div class="modal-divider"></div>
+
+        <!-- ✅ تبويبات الأقسام -->
+        <div class="info-tabs">
+            <button class="info-tab active" onclick="switchInfoTab('about', this)"><i class="fas fa-users"></i> من نحن</button>
+            <button class="info-tab" onclick="switchInfoTab('privacy', this)"><i class="fas fa-shield-halved"></i> الخصوصية</button>
+            <button class="info-tab" onclick="switchInfoTab('terms', this)"><i class="fas fa-file-contract"></i> الشروط</button>
+            <button class="info-tab" onclick="switchInfoTab('contact', this)"><i class="fas fa-envelope"></i> اتصال</button>
+            <button class="info-tab" onclick="switchInfoTab('disclaimer', this)"><i class="fas fa-triangle-exclamation"></i> إخلاء</button>
+            <button class="info-tab" onclick="switchInfoTab('faq', this)"><i class="fas fa-circle-question"></i> FAQ</button>
+        </div>
+
+        <div class="info-modal-body">
+            <!-- ✅ من نحن -->
+            <div class="info-section active" id="info-about">
+                <h3><i class="fas fa-users"></i> من نحن</h3>
+                <p>مرحبًا بك في <strong>RedKick</strong>.</p>
+                <p>RedKick هو موقع إلكتروني يوفر أدوات وخدمات تساعد مستخدمي منصة Kick على التفاعل بسهولة من خلال واجهة بسيطة وسريعة وآمنة.</p>
+                <p>نسعى إلى تقديم تجربة استخدام موثوقة مع تحسين الأداء باستمرار وإضافة ميزات جديدة تلبي احتياجات المستخدمين. هدفنا هو توفير أدوات فعالة توفر الوقت وتمنح المستخدم تجربة سلسة.</p>
+                <p>إذا كانت لديك أي اقتراحات أو ملاحظات، يسعدنا التواصل معك والعمل على تطوير الموقع بشكل مستمر.</p>
+            </div>
+
+            <!-- ✅ سياسة الخصوصية -->
+            <div class="info-section" id="info-privacy">
+                <h3><i class="fas fa-shield-halved"></i> سياسة الخصوصية</h3>
+                <p>في RedKick، نحترم خصوصية جميع المستخدمين ونلتزم بحماية بياناتهم.</p>
+                <p>قد نقوم بجمع بعض المعلومات التقنية، مثل عنوان IP ونوع المتصفح ونظام التشغيل، وذلك لتحسين أداء الموقع، وتحليل الأخطاء، وتعزيز تجربة الاستخدام.</p>
+                <p>لا نقوم ببيع أو تأجير أو مشاركة بيانات المستخدمين مع أي طرف ثالث، إلا إذا كان ذلك مطلوبًا بموجب القانون أو ضروريًا لتقديم الخدمة.</p>
+                <p>قد يستخدم الموقع ملفات تعريف الارتباط (Cookies) لتحسين تجربة المستخدم. باستخدامك للموقع فإنك توافق على سياسة الخصوصية هذه.</p>
+            </div>
+
+            <!-- ✅ شروط الاستخدام -->
+            <div class="info-section" id="info-terms">
+                <h3><i class="fas fa-file-contract"></i> شروط الاستخدام</h3>
+                <p>باستخدامك لموقع RedKick، فإنك توافق على الالتزام بهذه الشروط.</p>
+                <p>يجب استخدام الموقع بطريقة قانونية ومسؤولة، وعدم استغلاله في أي نشاط مخالف للقوانين أو شروط الخدمات المرتبطة به.</p>
+                <p>يحتفظ RedKick بحق تعديل أو تحديث الخدمات أو شروط الاستخدام في أي وقت دون إشعار مسبق، ويُعد استمرار استخدام الموقع موافقة على هذه التعديلات.</p>
+                <p>يتحمل المستخدم المسؤولية الكاملة عن استخدامه للموقع والخدمات المقدمة من خلاله.</p>
+            </div>
+
+            <!-- ✅ اتصل بنا -->
+            <div class="info-section" id="info-contact">
+                <h3><i class="fas fa-envelope"></i> اتصل بنا</h3>
+                <p>إذا كانت لديك أي استفسارات أو اقتراحات أو واجهت مشكلة أثناء استخدام الموقع، يمكنك التواصل معنا.</p>
+                <p>نسعى للرد على جميع الرسائل في أقرب وقت ممكن وتحسين خدماتنا باستمرار.</p>
+                <p>شكراً لاستخدامك RedKick ونتمنى لك تجربة مميزة.</p>
+                <div style="text-align:center; margin-top:14px;">
+                    <button class="wa-phone-btn" onclick="closeInfoModal(); openWhatsAppModal();" style="max-width:280px; margin:0 auto;">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>تواصل عبر واتساب</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ✅ إخلاء المسؤولية -->
+            <div class="info-section" id="info-disclaimer">
+                <h3><i class="fas fa-triangle-exclamation"></i> إخلاء المسؤولية</h3>
+                <p>يتم توفير خدمات RedKick "كما هي" دون أي ضمانات صريحة أو ضمنية.</p>
+                <p>يبذل فريق الموقع جهده لضمان دقة المعلومات واستقرار الخدمة، إلا أننا لا نضمن عدم حدوث انقطاعات أو أخطاء تقنية.</p>
+                <p>لا يتحمل RedKick أي مسؤولية عن أي أضرار أو خسائر ناتجة عن استخدام الموقع أو الاعتماد على المعلومات والخدمات المقدمة من خلاله.</p>
+                <p>يجب على المستخدم الالتزام بجميع القوانين وشروط استخدام المنصات والخدمات التي يتعامل معها أثناء استخدام الموقع.</p>
+            </div>
+
+            <!-- ✅ الأسئلة الشائعة -->
+            <div class="info-section" id="info-faq">
+                <h3><i class="fas fa-circle-question"></i> الأسئلة الشائعة</h3>
+                <div class="qa-item">
+                    <div class="qa-q">ما هو RedKick؟</div>
+                    <div class="qa-a">RedKick هو موقع يقدم أدوات وخدمات لمساعدة مستخدمي منصة Kick.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-q">هل استخدام الموقع مجاني؟</div>
+                    <div class="qa-a">تتوفر الخدمات المجانية، وقد يتم إضافة ميزات أخرى مستقبلًا.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-q">هل بياناتي آمنة؟</div>
+                    <div class="qa-a">نعم، نحن نولي أهمية كبيرة لحماية خصوصية المستخدمين.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-q">كيف أتواصل معكم؟</div>
+                    <div class="qa-a">يمكنك التواصل معنا عبر صفحة "اتصل بنا" الموجودة في الموقع.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- ✅ نافذة التواصل عبر واتساب -->
 <div class="modal-overlay" id="whatsAppModal" onclick="if(event.target===this)closeWhatsAppModal()">
@@ -1069,6 +1347,37 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ✅ إعلانات إضافية (popup, native, sidebar) -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- ✅ إعلان 6: Popunder (رابط مباشر) -->
+<script type="text/javascript" src="https://performanceingredientgoblet.com/k6vcky9h?key=ea05a6325558a1a5be44282dc06f098c"></script>
+
+<!-- ✅ إعلان 7: Native banner -->
+<script type="text/javascript" src="https://performanceingredientgoblet.com/da/72/8c/da728c59df8ec875ee86966b8dc0ee63.js"></script>
+
+<!-- ✅ إعلان 8: Social bar -->
+<script type="text/javascript" src="https://performanceingredientgoblet.com/a3/63/f7/a363f7a4a6d4a353d9766a35f14ddaf3.js"></script>
+
+<!-- ✅ إعلان 9: Container ad (يظهر في حاوية محددة) -->
+<script async="async" data-cfasync="false" src="https://performanceingredientgoblet.com/82d791d02f77c8723bc257ca26f152f7/invoke.js"></script>
+<div id="container-82d791d02f77c8723bc257ca26f152f7" style="display:none;"></div>
+
+<!-- ✅ إعلان 10: عمودي كبير (160×600) — يظهر كشريط جانبي على الشاشات الكبيرة -->
+<div class="ad-container ad-sidebar right" style="display:none;">
+    <script type="text/javascript">
+        atOptions = {
+            'key' : 'ae7af43f740c21c092a32161b42be9da',
+            'format' : 'iframe',
+            'height' : 600,
+            'width' : 160,
+            'params' : {}
+        };
+    </script>
+    <script type="text/javascript" src="https://performanceingredientgoblet.com/ae7af43f740c21c092a32161b42be9da/invoke.js"></script>
 </div>
 
 <script>
@@ -2663,6 +2972,33 @@ function goToWhatsApp() {
     var phone = '963995271182'; // الرقم بدون + ومسافات
     var url = 'https://wa.me/' + phone;
     window.open(url, '_blank');
+}
+
+// ═══════════════════════════════════════
+//  ✅ نافذة المعلومات الشاملة
+// ═══════════════════════════════════════
+function openInfoModal() {
+    $('infoModal').classList.add('open');
+}
+function closeInfoModal() {
+    $('infoModal').classList.remove('open');
+}
+// ✅ تبديل بين أقسام المعلومات
+function switchInfoTab(tabName, btnEl) {
+    // ✅ إخفاء كل الأقسام
+    var sections = document.querySelectorAll('.info-section');
+    for (var i = 0; i < sections.length; i++) {
+        sections[i].classList.remove('active');
+    }
+    // ✅ إظهار القسم المطلوب
+    var target = document.getElementById('info-' + tabName);
+    if (target) target.classList.add('active');
+    // ✅ تحديث التبويب النشط
+    var tabs = document.querySelectorAll('.info-tab');
+    for (var j = 0; j < tabs.length; j++) {
+        tabs[j].classList.remove('active');
+    }
+    if (btnEl) btnEl.classList.add('active');
 }
 
 // ═══════════════════════════════════════
