@@ -28,7 +28,7 @@
         @keyframes gd2{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,-30px)}}
         @keyframes gd3{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.15)}}
 
-        /* ✅ شاشة الدخول النارية — نسخة محسّنة بلمعان قوي ونيران */
+        /* ✅ شاشة الدخول النارية */
         .splash {
             position:fixed; inset:0; z-index:9999;
             background:radial-gradient(ellipse at center,#1a0505 0%,#080404 70%);
@@ -38,79 +38,23 @@
         .splash.hide { opacity:0; pointer-events:none; }
         .splash canvas { position:absolute; inset:0; width:100%; height:100%; }
         .splash-content { position:relative; z-index:2; text-align:center; }
-
-        /* ✅ حلقة الشعار مع نيران حولها */
         .splash-ring {
-            position:relative; width:160px; height:160px; margin:0 auto 24px;
+            position:relative; width:140px; height:140px; margin:0 auto 24px;
         }
-        /* ✅ النيران حول الشعار — حلقة دوارة */
-        .splash-fire-ring {
-            position:absolute; inset:-18px; border-radius:50%; pointer-events:none;
-            background:conic-gradient(from 0deg,
-                rgba(255,45,45,0) 0deg,
-                rgba(255,45,45,0.8) 60deg,
-                rgba(255,184,0,0.7) 120deg,
-                rgba(255,107,26,0.8) 180deg,
-                rgba(255,45,45,0.7) 240deg,
-                rgba(255,184,0,0.6) 300deg,
-                rgba(255,45,45,0) 360deg);
-            filter:blur(14px); opacity:0;
-            animation:fireRingIn 1s ease 0.8s forwards, fireRingSpin 3s linear 1.8s infinite;
-        }
-        @keyframes fireRingIn{from{opacity:0;transform:scale(.5)}to{opacity:.75;transform:scale(1)}}
-        @keyframes fireRingSpin{from{transform:rotate(0) scale(1)}to{transform:rotate(360deg) scale(1)}}
-
-        /* ✅ الشعار مع لمعان قوي */
         .splash-logo {
-            width:90px; height:90px; position:absolute; top:50%; left:50%;
+            width:80px; height:80px; position:absolute; top:50%; left:50%;
             transform:translate(-50%,-50%);
-            animation:splashLogoIn 1.2s cubic-bezier(.16,1,.3,1) forwards;
+            animation:splashLogoIn 1.2s cubic-bezier(.16,1,.3,1) forwards, splashLogoPulse 1.5s ease-in-out 1.2s infinite;
         }
         @keyframes splashLogoIn{
             0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-360deg)}
             60%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(0)}
             100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}
         }
-        .splash-logo img {
-            animation:splashLogoShine 2s ease-in-out 1.2s infinite;
+        @keyframes splashLogoPulse{
+            0%,100%{filter:drop-shadow(0 0 8px rgba(255,45,45,0.6)) drop-shadow(0 0 20px rgba(255,107,26,0.4))}
+            50%{filter:drop-shadow(0 0 20px rgba(255,45,45,0.9)) drop-shadow(0 0 40px rgba(255,184,0,0.5))}
         }
-        @keyframes splashLogoShine{
-            0%,100%{
-                filter:drop-shadow(0 0 8px rgba(255,45,45,0.8)) drop-shadow(0 0 18px rgba(255,107,26,0.6)) drop-shadow(0 0 30px rgba(255,184,0,0.4)) brightness(1);
-            }
-            25%{
-                filter:drop-shadow(0 0 14px rgba(255,45,45,1)) drop-shadow(0 0 28px rgba(255,107,26,0.9)) drop-shadow(0 0 50px rgba(255,184,0,0.7)) brightness(1.3);
-            }
-            50%{
-                filter:drop-shadow(0 0 22px rgba(255,45,45,1)) drop-shadow(0 0 40px rgba(255,184,0,0.9)) drop-shadow(0 0 70px rgba(255,45,45,0.6)) brightness(1.5);
-            }
-            75%{
-                filter:drop-shadow(0 0 14px rgba(255,184,0,1)) drop-shadow(0 0 28px rgba(255,107,26,0.9)) drop-shadow(0 0 50px rgba(255,45,45,0.7)) brightness(1.3);
-            }
-        }
-
-        /* ✅ لمعان ساطع يمر على الشعار */
-        .splash-shine {
-            position:absolute; top:50%; left:50%;
-            width:90px; height:90px; transform:translate(-50%,-50%) rotate(45deg);
-            pointer-events:none; opacity:0; overflow:hidden;
-            border-radius:50%;
-            animation:splashShineSweep 3s ease-in-out 1.5s infinite;
-        }
-        .splash-shine::before {
-            content:''; position:absolute; top:-50%; left:-100%;
-            width:80%; height:200%;
-            background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);
-            transform:rotate(35deg);
-            filter:blur(2px);
-        }
-        @keyframes splashShineSweep{
-            0%{opacity:0;transform:translate(-50%,-50%) rotate(45deg) translateX(-150%)}
-            20%{opacity:0.9}
-            40%{opacity:0;transform:translate(-50%,-50%) rotate(45deg) translateX(150%)}
-            100%{opacity:0}
-        }
-
         .splash-lightning {
             position:absolute; inset:0; width:100%; height:100%;
             animation:splashLightning 2s ease-in-out infinite;
@@ -128,11 +72,7 @@
             font-size:42px; font-weight:900; letter-spacing:-1px;
             background:linear-gradient(135deg,#FF2D2D 0%,#FF6B1A 50%,#FFB800 100%);
             -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-            animation:splashNameIn 1s cubic-bezier(.16,1,.3,1) .5s forwards, splashNameGlow 2s ease-in-out 1.5s infinite; opacity:0;
-        }
-        @keyframes splashNameGlow{
-            0%,100%{filter:drop-shadow(0 0 6px rgba(255,45,45,0.5))}
-            50%{filter:drop-shadow(0 0 14px rgba(255,184,0,0.8))}
+            animation:splashNameIn 1s cubic-bezier(.16,1,.3,1) .5s forwards; opacity:0;
         }
         @keyframes splashNameIn{0%{opacity:0;transform:translateY(20px) scale(.8)}100%{opacity:1;transform:translateY(0) scale(1)}}
         .splash-bar {
@@ -154,9 +94,70 @@
         .app-container {
             position:relative; z-index:10; min-height:100vh;
             display:flex; flex-direction:column; align-items:center; justify-content:center;
-            padding:20px 12px; max-width:560px; margin:0 auto;
+            padding:20px 12px 90px; max-width:560px; margin:0 auto;
             gap:0;
         }
+        /* ✅ زر العودة في الأعلى */
+        .back-bar {
+            display:flex; align-items:center; gap:10px;
+            width:100%; margin-bottom:18px;
+        }
+        .back-btn {
+            display:flex; align-items:center; gap:6px;
+            padding:9px 14px; border-radius:10px; cursor:pointer;
+            background:rgba(255,255,255,0.04); border:1px solid rgba(255,45,45,0.18);
+            color:var(--fg); font-size:12px; font-weight:700; font-family:inherit;
+            transition:all .2s;
+        }
+        .back-btn:hover { background:rgba(255,45,45,0.1); border-color:rgba(255,45,45,0.35); }
+        .back-btn i { font-size:13px; }
+        .back-title {
+            font-size:18px; font-weight:900;
+            background:linear-gradient(135deg,#FF2D2D 0%,#FF6B1A 50%,#FFB800 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+        /* ✅ زر الواتساب العائم — في الأسفل ولا يغطّي أي زر */
+        .whatsapp-fab {
+            position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+            z-index:40;
+            display:flex; align-items:center; gap:8px;
+            padding:11px 22px; border-radius:30px;
+            background:linear-gradient(135deg,#25D366,#128C7E);
+            color:#fff; font-size:13px; font-weight:700; font-family:inherit;
+            border:none; cursor:pointer;
+            box-shadow:0 6px 20px rgba(37,211,102,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+            transition:all .25s;
+        }
+        .whatsapp-fab:hover { transform:translateX(-50%) translateY(-2px); box-shadow:0 8px 28px rgba(37,211,102,0.55); }
+        .whatsapp-fab i { font-size:16px; }
+        .whatsapp-fab::before {
+            content:''; position:absolute; inset:-4px; border-radius:34px;
+            border:2px solid rgba(37,211,102,0.4); opacity:0;
+            animation:waPulse 2s ease-in-out infinite;
+        }
+        @keyframes waPulse{
+            0%,100%{opacity:0;transform:scale(1)}
+            50%{opacity:.7;transform:scale(1.08)}
+        }
+        /* ✅ نافذة التواصل عبر واتساب */
+        .wa-modal { padding:8px 4px; }
+        .wa-dev-text { text-align:center; padding:18px 10px 14px; }
+        .wa-dev-label { font-size:13px; color:var(--muted); margin-bottom:8px; }
+        .wa-dev-name {
+            font-size:26px; font-weight:900; letter-spacing:1px;
+            background:linear-gradient(135deg,#FF2D2D 0%,#FF6B1A 50%,#FFB800 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+        .wa-phone-btn {
+            width:100%;
+            background:linear-gradient(135deg,#25D366,#128C7E);
+            color:#fff; padding:13px; font-size:14px; font-weight:700; font-family:inherit;
+            border:none; border-radius:11px; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; gap:8px;
+            transition:all .2s;
+        }
+        .wa-phone-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(37,211,102,0.5); }
+        .wa-phone-btn i { font-size:18px; }
         .app-header {
             display:flex; align-items:center; gap:8px; margin-bottom:24px; width:100%;
             flex-wrap:wrap;
@@ -446,7 +447,7 @@
         .progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3)); border-radius:3px; transition:width .3s; width:0; }
         .progress-info { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-top:5px; }
 
-        @media(max-width:560px){.app-container{padding:14px 8px}.logo-img{width:42px;height:42px}.app-name{font-size:20px}}
+        @media(max-width:560px){.app-container{padding:14px 8px 90px}.logo-img{width:42px;height:42px}.app-name{font-size:20px}}
         @media(max-width:420px){.modal{max-width:100%;border-radius:14px;padding:14px 12px 12px}.modal-icon{width:38px;height:38px}.modal-title{font-size:16px}}
         @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
@@ -466,6 +467,48 @@
         .quick-item .qi-name { flex:1; font-size:13px; font-weight:700; }
         .quick-item .qi-icon { width:28px; height:28px; border-radius:7px; background:linear-gradient(135deg,rgba(255,45,45,0.12),rgba(255,107,26,0.08)); display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:12px; flex-shrink:0; }
         .quick-channel { padding-left:28px !important; background:rgba(255,255,255,0.015) !important; }
+
+        /* ✅ وضع الإعدادات المنفصلة — صف لكل بوت */
+        .qs-sep-toggle {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:10px 12px; margin-bottom:10px;
+            background:rgba(255,255,255,0.03); border:1px solid rgba(255,45,45,0.18);
+            border-radius:10px; cursor:pointer; transition:all .2s;
+        }
+        .qs-sep-toggle:hover { border-color:rgba(255,45,45,0.35); background:rgba(255,45,45,0.05); }
+        .qs-sep-toggle .sep-label { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; }
+        .qs-sep-toggle .sep-label i { color:var(--accent); font-size:13px; }
+        .qs-sep-row {
+            display:flex; flex-direction:column; gap:6px;
+            padding:10px; margin-bottom:8px;
+            background:rgba(255,255,255,0.025);
+            border:1px solid rgba(255,45,45,0.15); border-radius:10px;
+        }
+        .qs-sep-row .sep-bot-name {
+            display:flex; align-items:center; gap:8px;
+            font-size:12px; font-weight:700;
+        }
+        .qs-sep-row .sep-bot-name .dot { width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent); }
+        .qs-sep-row .sep-bot-name .ch-count { color:var(--muted); font-weight:400; font-size:10px; margin-right:auto; }
+        .qs-sep-row .sep-input-row { display:flex; gap:6px; align-items:flex-start; }
+        .qs-sep-row .sep-input-row textarea {
+            flex:1; min-height:50px; padding:8px 10px; font-size:13px;
+            border-radius:8px; resize:vertical;
+            background:rgba(8,4,4,0.5); color:var(--fg);
+            border:1px solid rgba(255,45,45,0.15); font-family:inherit;
+        }
+        .qs-sep-row .sep-input-row textarea:focus { outline:none; border-color:var(--accent); box-shadow:0 0 8px rgba(255,45,45,0.2); }
+        .qs-sep-row .sep-send-btn {
+            flex-shrink:0; padding:8px 14px; font-size:12px; font-weight:700;
+            background:linear-gradient(135deg,#FF2D2D,#FF6B1A); color:#fff;
+            border:none; border-radius:8px; cursor:pointer;
+            display:flex; align-items:center; gap:5px; white-space:nowrap;
+            transition:all .15s; min-height:50px;
+        }
+        .qs-sep-row .sep-send-btn:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 4px 12px rgba(255,45,45,0.4); }
+        .qs-sep-row .sep-send-btn:active:not(:disabled) { transform:translateY(0) scale(.96); }
+        .qs-sep-row .sep-send-btn.sending { background:linear-gradient(135deg,#FFB800,#FF6B1A); }
+        .qs-sep-row .sep-send-btn i { font-size:13px; }
         .channel-card {
             display:flex; align-items:center; gap:8px;
             padding:9px 11px;
@@ -568,19 +611,42 @@
 
         <div class="modal-divider"></div>
 
-        <div class="modal-field">
-            <label><i class="fas fa-robot"></i> اختر البوتات</label>
-            <div class="quick-list" id="qsBotList" style="max-height:280px"></div>
+        <!-- ✅ زر الإعدادات المنفصلة — لكل بوت رسالة خاصة -->
+        <div class="qs-sep-toggle" onclick="toggleQsSeparateMode()">
+            <div class="sep-label">
+                <i class="fas fa-layer-group"></i>
+                <span>الإعدادات المنفصلة</span>
+            </div>
+            <div class="toggle" id="tgQsSeparate"></div>
         </div>
 
-        <div class="modal-field">
-            <label><i class="fas fa-comment-dots"></i> الرسالة</label>
-            <textarea id="qsMessage" placeholder="اكتب رسالتك هنا" oninput="updateQsSendButton()"></textarea>
+        <!-- ✅ الوضع العادي: بوتات محددة + رسالة واحدة -->
+        <div id="qsNormalMode">
+            <div class="modal-field">
+                <label><i class="fas fa-robot"></i> اختر البوتات</label>
+                <div class="quick-list" id="qsBotList" style="max-height:280px"></div>
+            </div>
+
+            <div class="modal-field">
+                <label><i class="fas fa-comment-dots"></i> الرسالة</label>
+                <textarea id="qsMessage" placeholder="اكتب رسالتك هنا" oninput="updateQsSendButton()"></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-fire" id="qsSendBtn" onclick="quickSendMessage()" disabled><i class="fas fa-paper-plane"></i> إرسال</button>
+                <button class="btn btn-ghost" onclick="closeQuickSend()"><i class="fas fa-xmark"></i> إلغاء</button>
+            </div>
+            <div style="text-align:center;font-size:10px;color:var(--muted);margin-top:8px">
+                <i class="fas fa-bolt"></i> اضغط الإرسال عدة مرات للسبام — كل ضغطة ترسل الرسالة فوراً
+            </div>
         </div>
 
-        <div class="modal-actions">
-            <button class="btn btn-fire" id="qsSendBtn" onclick="quickSendMessage()" disabled><i class="fas fa-paper-plane"></i> إرسال</button>
-            <button class="btn btn-ghost" onclick="closeQuickSend()"><i class="fas fa-xmark"></i> إلغاء</button>
+        <!-- ✅ الوضع المنفصل: لكل بوت رسالة خاصة + زر إرسال -->
+        <div id="qsSeparateMode" style="display:none">
+            <div class="quick-list" id="qsSeparateList" style="max-height:420px"></div>
+            <div style="text-align:center;font-size:10px;color:var(--muted);margin-top:8px">
+                <i class="fas fa-info-circle"></i> لكل بوت رسالة خاصة — اضغط زر الإرسال عدة مرات للسبام
+            </div>
         </div>
     </div>
 </div>
@@ -873,16 +939,14 @@
 <div class="app-container">
 
     <!-- شاشة التحميل -->
-    <!-- ✅ شاشة الدخول النارية — بلمعان قوي ونيران دوارة -->
+    <!-- ✅ شاشة الدخول النارية -->
     <div class="splash" id="splash">
         <canvas id="splashFire"></canvas>
         <div class="splash-content">
             <div class="splash-ring">
-                <div class="splash-fire-ring"></div>
                 <div class="splash-logo">
                     <img src="https://z-cdn-media.chatglm.cn/files/ab46995c-be54-4f0c-97d9-dc9965e3150b.png?auth_key=1881547846-5faaad2376f94647ae1522c3a0360a5e-0-48bb8eb6d9136f1963f04a687018a6a3" alt="RedKick" style="width:100%;height:100%;object-fit:cover;border-radius:50%;outline:2px solid #000;border:3px solid #000;box-shadow:0 0 0 1px #000,0 0 20px rgba(255,45,45,0.6)">
                 </div>
-                <div class="splash-shine"></div>
                 <svg class="splash-lightning" viewBox="0 0 200 200">
                     <path d="M100 5 L95 60 L105 55 L90 120 L100 110 L80 195" fill="none" stroke="#FF2D2D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
                     <path d="M100 5 L105 60 L95 55 L110 120 L100 110 L120 195" fill="none" stroke="#FFB800" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
@@ -904,6 +968,14 @@
 
     <!-- إضافة بوت جديد -->
     <div class="phase" id="ph-add">
+        <!-- ✅ زر العودة في الأعلى -->
+        <div class="back-bar">
+            <button class="back-btn" onclick="navBackFromAdd()" title="رجوع للبوتات">
+                <i class="fas fa-arrow-right"></i>
+                <span>رجوع</span>
+            </button>
+            <div class="back-title">إضافة بوت</div>
+        </div>
         <div class="card">
             <div style="text-align:center;margin-bottom:20px">
                 <img src="https://z-cdn-media.chatglm.cn/files/ab46995c-be54-4f0c-97d9-dc9965e3150b.png?auth_key=1881547846-5faaad2376f94647ae1522c3a0360a5e-0-48bb8eb6d9136f1963f04a687018a6a3" alt="RedKick" style="width:72px;height:72px;object-fit:cover;border-radius:50%;outline:none;border:2px solid #000;box-shadow:0 0 0 2px #000,0 0 15px rgba(255,45,45,0.4)">
@@ -961,6 +1033,42 @@
         </div>
     </div>
 
+</div>
+
+<!-- ✅ زر الواتساب العائم في الأسفل -->
+<button class="whatsapp-fab" onclick="openWhatsAppModal()">
+    <i class="fab fa-whatsapp"></i>
+    <span>تواصل معنا</span>
+</button>
+
+<!-- ✅ نافذة التواصل عبر واتساب -->
+<div class="modal-overlay" id="whatsAppModal" onclick="if(event.target===this)closeWhatsAppModal()">
+    <div class="modal">
+        <div class="modal-x" onclick="closeWhatsAppModal()" title="إغلاق"><i class="fas fa-xmark"></i></div>
+        <div class="modal-head">
+            <div class="modal-icon"><i class="fab fa-whatsapp" style="color:#25D366"></i></div>
+            <div class="modal-title">تواصل عبر واتساب</div>
+        </div>
+        <div class="modal-divider"></div>
+
+        <div class="wa-modal">
+            <!-- ✅ نص المطوّر -->
+            <div class="wa-dev-text">
+                <div class="wa-dev-label">تم تطوير الموقع من خلال</div>
+                <div class="wa-dev-name">彡SYRIA彡</div>
+            </div>
+
+            <div class="modal-divider"></div>
+
+            <!-- ✅ زر التواصل عبر واتساب — يحوّل المستخدم إلى واتساب -->
+            <div style="padding:14px 6px">
+                <button class="wa-phone-btn" onclick="goToWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>تواصل عبر واتساب</span>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -1602,7 +1710,6 @@ function toggleSendToNonLive() {
     sendToNonLive = !sendToNonLive;
     setToggle('tgSendNonLive', sendToNonLive);
     saveSendToNonLive();
-    playToggleSound(sendToNonLive);
     toast(sendToNonLive ? 'تم تفعيل الإرسال لغير المباشر — كل القنوات' : 'تم تفعيل الإرسال للبث المباشر فقط', 'i');
 }
 
@@ -1662,10 +1769,28 @@ function utf8ToBase64(str) {
     } catch(e) { return ''; }
 }
 
-// ✅ تحويل base64 إلى نص UTF-8
+// ✅ تحويل base64 إلى نص UTF-8 — متسامح مع المسافات والأسطر الجديدة والـ padding
 function base64ToUtf8(b64) {
     try {
-        return decodeURIComponent(Array.prototype.map.call(atob(b64), function(c) {
+        // ✅ تنظيف الكود من المسافات والأسطر الجديدة
+        b64 = String(b64 || '').replace(/\s+/g, '');
+        // ✅ إزالة أي أحرف غير صالحة في base64
+        b64 = b64.replace(/[^A-Za-z0-9+/=]/g, '');
+        // ✅ إصلاح الـ padding (يجب أن يكون طول base64 من مضاعفات 4)
+        var pad = b64.length % 4;
+        if (pad === 1) return ''; // طول غير صالح تماماً
+        if (pad === 2) b64 += '==';
+        else if (pad === 3) b64 += '=';
+        // ✅ فك التشفير
+        var decoded;
+        try {
+            decoded = atob(b64);
+        } catch(e) {
+            // ✅ محاولة بديلة: قسّم الكود وأعد محاولة فك التشفير
+            return '';
+        }
+        // ✅ تحويل إلى UTF-8
+        return decodeURIComponent(Array.prototype.map.call(decoded, function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
     } catch(e) { return ''; }
@@ -1762,16 +1887,17 @@ function importTransferCode() {
         return;
     }
 
-    // ✅ التحقق من البادئة
+    // ✅ التحقق من البادئة — متسامح مع المسافات قبلها
+    code = code.replace(/^\s+/, ''); // إزالة المسافات في البداية
     if (code.indexOf('RK1-') !== 0) {
-        toast('كود غير صالح — تأكد من نسخه بالكامل', 'e');
+        toast('كود غير صالح — الكود يجب أن يبدأ بـ RK1-', 'e');
         return;
     }
 
     var b64 = code.substring(4);
     var json = base64ToUtf8(b64);
     if (!json) {
-        toast('كود تالف أو غير مكتمل', 'e');
+        toast('كود تالف أو غير مكتمل — تأكد من نسخ الكود كاملاً', 'e');
         return;
     }
 
@@ -1779,12 +1905,17 @@ function importTransferCode() {
     try {
         data = JSON.parse(json);
     } catch(e) {
-        toast('كود غير صالح', 'e');
+        toast('الكود تالف — تعذّر تحليل البيانات', 'e');
         return;
     }
 
     if (!data || !data.bots || !Array.isArray(data.bots)) {
-        toast('بنية الكود غير صحيحة', 'e');
+        toast('بنية الكود غير صحيحة — لا توجد بوتات', 'e');
+        return;
+    }
+
+    if (data.bots.length === 0) {
+        toast('الكود لا يحتوي على أي بوتات', 'e');
         return;
     }
 
@@ -1884,7 +2015,6 @@ function uToggleEnabled() {
     unifiedSettings.enabled = !unifiedSettings.enabled;
     setToggle('tgUnifiedEnabled', unifiedSettings.enabled);
     $('unifiedFields').style.display = unifiedSettings.enabled ? 'block' : 'none';
-    playToggleSound(unifiedSettings.enabled);
 }
 
 function uToggleInfinite() {
@@ -1893,7 +2023,6 @@ function uToggleInfinite() {
     $('uRepeat').disabled = unifiedSettings.isInfinite;
     if (unifiedSettings.isInfinite) $('uRepeat').value = 0;
     else if ($('uRepeat').value == 0) $('uRepeat').value = 1;
-    playToggleSound(unifiedSettings.isInfinite);
 }
 
 function uToggleRandomDelay() {
@@ -1905,13 +2034,11 @@ function uToggleRandomDelay() {
         uIntervalWrap.style.opacity = unifiedSettings.randomDelay ? '0.35' : '1';
         uIntervalWrap.style.pointerEvents = unifiedSettings.randomDelay ? 'none' : 'auto';
     }
-    playToggleSound(unifiedSettings.randomDelay);
 }
 
 function uToggleRandomMessages() {
     unifiedSettings.randomMessages = !unifiedSettings.randomMessages;
     setToggle('uTgRandomMessages', unifiedSettings.randomMessages);
-    playToggleSound(unifiedSettings.randomMessages);
 }
 
 function saveUnifiedSettings() {
@@ -1957,6 +2084,9 @@ function loadUnifiedSettings() {
 // ═══════════════════════════════════════
 var qsSelectedBots = {};   // { botId: true }
 var qsSelectedChannels = {}; // { botId: { slug: true } }
+// ✅ وضع الإعدادات المنفصلة + رسائل منفصلة لكل بوت
+var qsSeparateMode = false;
+var qsSeparateMessages = {}; // { botId: 'message' }
 
 function openQuickSend() {
     qsSelectedBots = {};
@@ -1965,11 +2095,157 @@ function openQuickSend() {
     $('qsMessage').value = '';
     renderQsBotList();
     updateQsSendButton();
+    renderQsSeparateList();
     $('quickSendModal').classList.add('open');
 }
 
 function closeQuickSend() {
     $('quickSendModal').classList.remove('open');
+}
+
+// ✅ تبديل وضع الإعدادات المنفصلة
+function toggleQsSeparateMode() {
+    qsSeparateMode = !qsSeparateMode;
+    var tg = $('tgQsSeparate');
+    if (qsSeparateMode) tg.classList.add('on');
+    else tg.classList.remove('on');
+    $('qsNormalMode').style.display = qsSeparateMode ? 'none' : 'block';
+    $('qsSeparateMode').style.display = qsSeparateMode ? 'block' : 'none';
+    if (qsSeparateMode) renderQsSeparateList();
+}
+
+// ✅ عرض قائمة البوتات في الوضع المنفصل — لكل بوت رسالة + زر إرسال
+function renderQsSeparateList() {
+    var box = $('qsSeparateList');
+    if (!box) return;
+    if (accounts.length === 0) {
+        box.innerHTML = '<div style="text-align:center;padding:14px;color:var(--muted);font-size:11px">لا توجد بوتات</div>';
+        return;
+    }
+    var html = '';
+    for (var i = 0; i < accounts.length; i++) {
+        var b = accounts[i];
+        var chCount = b.channels.length;
+        var selChCount = 0;
+        if (qsSelectedChannels[b.id]) {
+            for (var s in qsSelectedChannels[b.id]) { if (qsSelectedChannels[b.id][s]) selChCount++; }
+        }
+        // ✅ تأكد من تحديد البوت في الوضع المنفصل
+        if (!qsSelectedBots[b.id] && chCount > 0) {
+            qsSelectedBots[b.id] = true;
+            // ✅ حدّد كل القنوات افتراضياً
+            if (!qsSelectedChannels[b.id]) {
+                qsSelectedChannels[b.id] = {};
+                for (var c = 0; c < b.channels.length; c++) {
+                    qsSelectedChannels[b.id][b.channels[c].slug] = true;
+                }
+            }
+            selChCount = chCount;
+        }
+        var savedMsg = qsSeparateMessages[b.id] || '';
+        html += '<div class="qs-sep-row">';
+        html += '<div class="sep-bot-name">';
+        html += '<span class="dot"></span>';
+        html += '<span>' + escH(b.username) + '</span>';
+        html += '<span class="ch-count">' + selChCount + '/' + chCount + ' قناة</span>';
+        html += '<button class="btn btn-ghost btn-xxs" onclick="openQsChannels(' + b.id + ')" title="تحديد القنوات" style="padding:3px 7px;font-size:10px"><i class="fas fa-tv"></i></button>';
+        html += '</div>';
+        html += '<div class="sep-input-row">';
+        html += '<textarea id="qsSepMsg_' + b.id + '" placeholder="رسالة ' + escH(b.username) + '..." oninput="saveQsSeparateMessage(' + b.id + ', this.value)">' + escH(savedMsg) + '</textarea>';
+        html += '<button class="sep-send-btn" id="qsSepBtn_' + b.id + '" onclick="quickSendSingleBot(' + b.id + ')" ' + (chCount === 0 ? 'disabled' : '') + '>';
+        html += '<i class="fas fa-paper-plane"></i>';
+        html += '<span>إرسال</span>';
+        html += '</button>';
+        html += '</div>';
+        html += '</div>';
+    }
+    box.innerHTML = html;
+}
+
+// ✅ حفظ رسالة بوت معيّن في الوضع المنفصل
+function saveQsSeparateMessage(botId, msg) {
+    qsSeparateMessages[botId] = msg;
+}
+
+// ✅ إرسال رسالة لبوت واحد (في الوضع المنفصل) — يدعم السبام
+async function quickSendSingleBot(botId) {
+    var b = findBot(botId);
+    if (!b) return;
+    var msgEl = $('qsSepMsg_' + botId);
+    if (!msgEl) return;
+    var msg = msgEl.value.trim();
+    if (!msg) { toast('أدخل رسالة لـ ' + b.username, 'e'); return; }
+
+    var selChannels = qsSelectedChannels[botId];
+    if (!selChannels) {
+        // ✅ إذا لم تحدد قنوات، استخدم كل القنوات المفعّلة
+        selChannels = {};
+        for (var c = 0; c < b.channels.length; c++) {
+            if (b.channels[c].enabled !== false) {
+                selChannels[b.channels[c].slug] = true;
+            }
+        }
+    }
+
+    var tasks = [];
+    for (var slug in selChannels) {
+        if (!selChannels[slug]) continue;
+        var ch = findChannel(b, slug);
+        if (!ch) continue;
+        tasks.push({ bot: b, channel: ch, slug: slug });
+    }
+
+    if (tasks.length === 0) {
+        toast('لا توجد قنوات محددة لـ ' + b.username, 'e');
+        return;
+    }
+
+    // ✅ السبام: لا نعطّل الزر — نغيّر لونه فقط للإشارة للإرسال
+    var btn = $('qsSepBtn_' + botId);
+    if (btn) {
+        btn.classList.add('sending');
+        btn.innerHTML = '<span class="spinner-sm"></span><span>إرسال...</span>';
+    }
+
+    var sent = 0, failed = 0;
+    for (var i = 0; i < tasks.length; i++) {
+        var task = tasks[i];
+        var cid = task.channel.chatroomId;
+        if (!cid || !task.channel.verified) {
+            try {
+                var chData = await fetchChannel(task.slug, task.bot);
+                cid = extractChatroomId(chData);
+                if (!cid) cid = await fetchChatroomId(task.slug, task.bot);
+                if (cid) {
+                    task.channel.chatroomId = cid;
+                    task.channel.verified = true;
+                    persist();
+                }
+            } catch(e) {
+                failed++;
+                continue;
+            }
+        }
+        if (!cid) { failed++; continue; }
+        try {
+            await sendMessage(cid, msg, task.bot.token, task.bot.workingSendProxy);
+            sent++;
+        } catch(e) {
+            failed++;
+        }
+    }
+
+    // ✅ إعادة الزر لحالته الطبيعية — السبام متاح
+    if (btn) {
+        btn.classList.remove('sending');
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i><span>إرسال</span>';
+    }
+
+    if (sent > 0) {
+        toast('✓ ' + b.username + ': أُرسلت إلى ' + sent + ' قناة' + (failed > 0 ? ' (فشل ' + failed + ')' : ''), 's');
+    } else {
+        toast('✗ ' + b.username + ': فشل الإرسال', 'e');
+    }
 }
 
 function qsToggleBot(id) {
@@ -1988,6 +2264,8 @@ function qsToggleChannel(botId, slug) {
     else qsSelectedChannels[botId][slug] = true;
     renderQsChannelList();
     updateQsSendButton();
+    // ✅ حدّث القائمة المنفصلة لعرض عدّاد القنوات المحددة
+    if (qsSeparateMode) renderQsSeparateList();
 }
 
 var qsExpandedBot = null;
@@ -2114,9 +2392,12 @@ async function quickSendMessage() {
         return;
     }
 
+    // ✅ السبام: لا نعطّل الزر — نغيّر لونه فقط للإشارة للإرسال
     var btn = $('qsSendBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-sm"></span> جاري الإرسال...';
+    var wasDisabled = btn.disabled;
+    btn.disabled = false; // ✅ ابقِ الزر متاحاً للسبام
+    var originalHtml = '<i class="fas fa-paper-plane"></i> إرسال';
+    btn.innerHTML = '<span class="spinner-sm"></span> إرسال...';
 
     var sent = 0, failed = 0;
     for (var i = 0; i < tasks.length; i++) {
@@ -2147,14 +2428,14 @@ async function quickSendMessage() {
         }
     }
 
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال';
+    // ✅ إعادة الزر لحالته — السبام متاح للضغط مجدداً
+    btn.innerHTML = originalHtml;
 
     if (sent > 0) {
-        toast('تم إرسال الرسالة إلى ' + sent + ' قناة' + (failed > 0 ? ' (فشل في ' + failed + ')' : ''), 's');
-        $('qsMessage').value = '';
+        toast('✓ تم إرسال الرسالة إلى ' + sent + ' قناة' + (failed > 0 ? ' (فشل في ' + failed + ')' : ''), 's');
+        // ✅ لا نمسح الرسالة — للسماح بالسبام بالضغط المتكرر
     } else {
-        toast('فشل الإرسال إلى جميع القنوات', 'e');
+        toast('✗ فشل الإرسال إلى جميع القنوات', 'e');
     }
     updateQsSendButton();
 }
@@ -2264,108 +2545,6 @@ function loadFromStorage() {
 }
 
 // ═══════════════════════════════════════
-//  ✅ أصوات الأزرار — نظام صوتي موحّد
-// ═══════════════════════════════════════
-var _btnAudioCtx = null;
-function _getBtnAudioCtx() {
-    if (!_btnAudioCtx) {
-        try { _btnAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-    }
-    // ✅ استئناف الـ context إن كان معلّقاً (سياسة المتصفح)
-    if (_btnAudioCtx && _btnAudioCtx.state === 'suspended') {
-        try { _btnAudioCtx.resume(); } catch(e) {}
-    }
-    return _btnAudioCtx;
-}
-
-// ✅ صوت النقر العادي — قصير وحاد
-function playClickSound() {
-    try {
-        var ctx = _getBtnAudioCtx();
-        if (!ctx) return;
-        var now = ctx.currentTime;
-        var osc = ctx.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(900, now);
-        osc.frequency.exponentialRampToValueAtTime(450, now + 0.06);
-        var gain = ctx.createGain();
-        gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.08, now + 0.005);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(now); osc.stop(now + 0.12);
-    } catch(e) {}
-}
-
-// ✅ صوت التأكيد/النجاح — نغمتان صاعدتان
-function playSuccessSound() {
-    try {
-        var ctx = _getBtnAudioCtx();
-        if (!ctx) return;
-        var now = ctx.currentTime;
-        var osc = ctx.createOscillator();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(660, now);
-        osc.frequency.setValueAtTime(880, now + 0.08);
-        var gain = ctx.createGain();
-        gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.1, now + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(now); osc.stop(now + 0.3);
-    } catch(e) {}
-}
-
-// ✅ صوت الخطأ — نغمتان هابطتان
-function playErrorSound() {
-    try {
-        var ctx = _getBtnAudioCtx();
-        if (!ctx) return;
-        var now = ctx.currentTime;
-        var osc = ctx.createOscillator();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.setValueAtTime(220, now + 0.12);
-        var gain = ctx.createGain();
-        gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.07, now + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(now); osc.stop(now + 0.32);
-    } catch(e) {}
-}
-
-// ✅ صوت التبديل (toggle) — نقرة + طنين خفيف
-function playToggleSound(on) {
-    try {
-        var ctx = _getBtnAudioCtx();
-        if (!ctx) return;
-        var now = ctx.currentTime;
-        var osc = ctx.createOscillator();
-        osc.type = 'square';
-        // نغمة عالية عند التشغيل، منخفضة عند الإيقاف
-        osc.frequency.setValueAtTime(on ? 880 : 440, now);
-        var gain = ctx.createGain();
-        gain.gain.setValueAtTime(0, now);
-        gain.gain.linearRampToValueAtTime(0.06, now + 0.005);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(now); osc.stop(now + 0.14);
-    } catch(e) {}
-}
-
-// ✅ مستمع عام: أي عنصر يحمل data-sound="click" يشغّل صوت النقر
-document.addEventListener('click', function(e) {
-    var t = e.target;
-    // ✅ ابحث عن أقرب عنصر بصلاحية النقر (button أو [onclick])
-    var el = t.closest('button, [onclick], .toggle, .header-toggle, .bot-checkbox');
-    if (!el) return;
-    // ✅ استثنِ النقرات على عناصر داخل نص الإدخال
-    if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA') return;
-    playClickSound();
-}, true);
-
-// ═══════════════════════════════════════
 //  واجهة المستخدم
 // ═══════════════════════════════════════
 function showPhase(name) {
@@ -2374,9 +2553,6 @@ function showPhase(name) {
 }
 
 function toast(msg, type) {
-    // ✅ صوت حسب نوع الرسالة
-    if (type === 's') playSuccessSound();
-    else if (type === 'e') playErrorSound();
     var t = document.createElement('div');
     t.className = 'toast toast-' + (type || 'i');
     t.textContent = msg;
@@ -2459,6 +2635,36 @@ function goAddToken() {
     showPhase('add');
 }
 
+// ✅ العودة من صفحة إضافة بوت إلى قائمة البوتات
+function navBackFromAdd() {
+    // ✅ إذا يوجد بوتات، ارجع للقائمة الرئيسية
+    if (accounts.length > 0) {
+        renderBotList();
+        showPhase('main');
+    } else {
+        // ✅ لا توجد بوتات — ابقَ في صفحة الإضافة لكن أفرغ الحقل
+        $('inToken').value = '';
+        $('tokenStatus').innerHTML = '';
+        toast('أضف بوتاً واحداً على الأقل للبدء', 'i');
+    }
+}
+
+// ═══════════════════════════════════════
+//  ✅ زر التواصل عبر واتساب
+// ═══════════════════════════════════════
+function openWhatsAppModal() {
+    $('whatsAppModal').classList.add('open');
+}
+function closeWhatsAppModal() {
+    $('whatsAppModal').classList.remove('open');
+}
+// ✅ تحويل المستخدم إلى واتساب على الرقم +963 995271182
+function goToWhatsApp() {
+    var phone = '963995271182'; // الرقم بدون + ومسافات
+    var url = 'https://wa.me/' + phone;
+    window.open(url, '_blank');
+}
+
 // ═══════════════════════════════════════
 //  ✅ تجديد التوكن — يحل التوكن الجديد محل القديم مع الإبقاء على كل الإعدادات
 // ═══════════════════════════════════════
@@ -2532,7 +2738,10 @@ async function doRenewToken() {
         // ✅ إيقاف البوت أولاً إن كان يعمل
         if (b.isSending) {
             b.isSending = false;
-            if (abortControllers[b.id]) abortControllers[b.id].abort();
+            if (abortControllers[b.id]) {
+                abortControllers[b.id].abort();
+                delete abortControllers[b.id];
+            }
         }
 
         // ✅ حفظ نسخة من الإعدادات القديمة (القنوات + كل التفاصيل)
@@ -2562,7 +2771,7 @@ async function doRenewToken() {
         renderBotList();
 
         $('renewTokenStatus').innerHTML = '<span style="color:var(--success)"><i class="fas fa-check-circle"></i> تم تجديد التوكن — ' + escH(displayName) + '</span>';
-        toast('تم تجديد التوكن بنجاح', 's');
+        toast('تم تجديد التوكن بنجاح — الإعدادات محفوظة', 's');
 
         // ✅ إغلاق النافذة بعد فترة قصيرة
         setTimeout(function() { closeRenewToken(); }, 1200);
@@ -2629,10 +2838,8 @@ function renderBotList() {
 //  التحديد
 // ═══════════════════════════════════════
 function toggleSelect(id) {
-    var newState = !selectedBots[id];
     if (selectedBots[id]) delete selectedBots[id];
     else selectedBots[id] = true;
-    playToggleSound(newState);
     persist();
     renderBotList();
 }
@@ -2733,7 +2940,6 @@ function mToggle(toggleId, fieldName) {
     if (!b) return;
     b[fieldName] = !b[fieldName];
     setToggle(toggleId, b[fieldName]);
-    playToggleSound(b[fieldName]);
     persist();
 }
 
@@ -2948,7 +3154,6 @@ function cToggleInfinite() {
     $('cRepeat').disabled = ch.isInfinite;
     if (ch.isInfinite) $('cRepeat').value = 0;
     else if ($('cRepeat').value == 0) $('cRepeat').value = 1;
-    playToggleSound(ch.isInfinite);
     persist();
 }
 
@@ -2966,7 +3171,6 @@ function cToggleRandomDelay() {
         cIntervalWrap.style.opacity = ch.randomDelay ? '0.35' : '1';
         cIntervalWrap.style.pointerEvents = ch.randomDelay ? 'none' : 'auto';
     }
-    playToggleSound(ch.randomDelay);
     persist();
 }
 
@@ -2978,7 +3182,6 @@ function cToggleRandomMessages() {
     if (!ch) return;
     ch.randomMessages = !ch.randomMessages;
     setToggle('tgRandomMessages', ch.randomMessages);
-    playToggleSound(ch.randomMessages);
     persist();
 }
 
@@ -3011,6 +3214,11 @@ function saveChannelSettings() {
 // ═══════════════════════════════════════
 //  تشغيل البوتات المحددة
 // ═══════════════════════════════════════
+// ✅ عدّاد تشغيل البوتات المتسلسل + حالة الإيقاف الإجباري
+var _botStartQueue = [];          // قائمة البوتات المنتظرة للتشغيل
+var _botStartTimer = null;        // مؤقّت التأخير بين البوتات
+var _forceStopAll = false;        // علم الإيقاف الإجباري
+
 async function startSelectedBots() {
     var toStart = [];
     // ✅ إذا الإعدادات الموحدة مفعّلة ولها رسائل — كل القنوات تعتبر صالحة
@@ -3047,13 +3255,55 @@ async function startSelectedBots() {
         toast('لا توجد بوتات صالحة للتشغيل', 'e');
         return;
     }
-    toast('تشغيل ' + toStart.length + ' بوت', 's');
-    for (var i = 0; i < toStart.length; i++) {
-        startBotLoop(toStart[i]);
+
+    // ✅ إعادة ضبط حالة الإيقاف الإجباري + بناء قائمة الانتظار
+    _forceStopAll = false;
+    _botStartQueue = toStart.slice();
+    toast('تشغيل ' + toStart.length + ' بوت (كل بوت بعد 3 ثوانٍ)', 's');
+
+    // ✅ شغّل البوت الأول فوراً
+    _startNextBotInQueue();
+}
+
+// ✅ تشغيل البوت التالي في قائمة الانتظار (مع تأخير 3 ثوانٍ)
+function _startNextBotInQueue() {
+    // ✅ تحقق من الإيقاف الإجباري
+    if (_forceStopAll) {
+        _botStartQueue = [];
+        _botStartTimer = null;
+        return;
+    }
+    // ✅ إذا القائمة فارغة، انتهى التشغيل
+    if (_botStartQueue.length === 0) {
+        _botStartTimer = null;
+        return;
+    }
+    // ✅ خذ البوت التالي وشغّله
+    var bot = _botStartQueue.shift();
+    if (bot && !bot.isSending) {
+        startBotLoop(bot).catch(function(){});
+    }
+    // ✅ إذا يوجد بوت تالي، انتظر 3 ثوانٍ ثم شغّله
+    if (_botStartQueue.length > 0 && !_forceStopAll) {
+        _botStartTimer = setTimeout(function() {
+            _botStartTimer = null;
+            _startNextBotInQueue();
+        }, 3000);
+    } else {
+        _botStartTimer = null;
     }
 }
 
 function stopAllBots() {
+    // ✅ تفعيل الإيقاف الإجباري — يوقف قائمة الانتظار فوراً
+    _forceStopAll = true;
+    _botStartQueue = [];
+    // ✅ إلغاء مؤقّت التأخير إن كان يعمل
+    if (_botStartTimer) {
+        clearTimeout(_botStartTimer);
+        _botStartTimer = null;
+    }
+
     var stopped = 0;
     for (var i = 0; i < accounts.length; i++) {
         if (accounts[i].isSending) {
@@ -3062,9 +3312,12 @@ function stopAllBots() {
             stopped++;
         }
     }
-    if (stopped > 0) toast('تم إيقاف ' + stopped + ' بوت', 'i');
-    else toast('لا توجد بوتات تعمل', 'i');
+    if (stopped > 0) toast('تم إيقاف ' + stopped + ' بوت إجبارياً', 'i');
+    else toast('تم إيقاف العد', 'i');
     forceUIUpdate();
+
+    // ✅ تصفير علم الإيقاف الإجباري بعد فترة قصيرة للسماح بتشغيل جديد لاحقاً
+    setTimeout(function() { _forceStopAll = false; }, 500);
 }
 
 // ═══════════════════════════════════════
@@ -3100,6 +3353,8 @@ function delay(ms, signal) {
 }
 
 async function startBotLoop(bot) {
+    // ✅ تحقق من الإيقاف الإجباري قبل البدء
+    if (_forceStopAll) return;
     // ✅ فلترة القنوات المفعّلة AND (لها رسائل خاصة OR الإعدادات الموحدة مفعّلة)
     var unifiedReady = unifiedSettings.enabled && unifiedSettings.messages && unifiedSettings.messages.trim();
     var validChannels = bot.channels.filter(function(c){
@@ -3127,7 +3382,7 @@ async function startBotLoop(bot) {
     if (bot.parallel === false && validChannels.length > 1) {
         // تسلسلي
         for (var s = 0; s < validChannels.length; s++) {
-            if (!bot.isSending) break;
+            if (!bot.isSending || _forceStopAll) break;
             // ✅ تحقق من التفعيل قبل كل قناة
             if (validChannels[s].enabled === false) continue;
             try { await runChannelLoop(bot, validChannels[s]); } catch(e) {}
@@ -3279,9 +3534,14 @@ async function runChannelOnce(bot, ch, eff, msgs, interval, infinite, repeatCoun
     // يضمن: كل رسالة تُرسل مرة واحدة قبل التكرار + لا تكرار متتالٍ عبر الدورات
     var msgPool = [];
     var lastSentMsg = null;
+    var msgIndex = 0; // ✅ عدّار للوضع غير العشوائي (ترتيب ثابت)
     function nextMessage() {
-        // إذا لم تكن الرسائل عشوائية، أرسل بالترتيب الثابت
-        if (!eff.randomMessages) return msgs[msgPool.length % msgs.length];
+        // ✅ الوضع غير العشوائي: أرسل بالترتيب الثابت، وانتقل للرسالة التالية
+        if (!eff.randomMessages) {
+            var msg = msgs[msgIndex % msgs.length];
+            msgIndex++; // ✅ انتقل للرسالة التالية
+            return msg;
+        }
         // ✅ الرسائل العشوائية: استخدم البركة
         if (msgPool.length === 0) {
             // إعادة ملء البركة بكل الرسائل
@@ -3324,8 +3584,8 @@ async function runChannelOnce(bot, ch, eff, msgs, interval, infinite, repeatCoun
     async function checkLiveNow() {
         if (eff.sendToNonLive) return true;
         var now = Date.now();
-        // لا تفحص أكثر من مرة كل 30 ثانية لتفادي الحمل
-        if (now - lastLiveCheck < 30000 && ch.isLive !== undefined) {
+        // ✅ كاش لمدة 10 ثوانٍ فقط — للكشف السريع عن إغلاق البث
+        if (now - lastLiveCheck < 10000 && ch.isLive !== undefined) {
             return ch.isLive;
         }
         lastLiveCheck = now;
@@ -3512,14 +3772,34 @@ async function runChannelOnce(bot, ch, eff, msgs, interval, infinite, repeatCoun
         }
 
         // ✅ الفاصل الزمني — مختلف لكل رسالة (عشوائي أو ثابت)
+        // ✅ مع فحص البث كل 30 ثانية أثناء الانتظار — يوقف فوراً عند إغلاق البث
         if (bot.isSending && msgSent) {
             var isLastInRound = (sentInRound >= msgs.length);
             var isLastRound = (!infinite && roundNum >= repeatCount - 1);
             if (!(isLastInRound && isLastRound)) {
                 // ✅ احسب التأخير لهذه الرسالة (عشوائي أو ثابت)
                 var waitSec = getDelay();
-                try { await delay(waitSec * 1000, abortControllers[bot.id] ? abortControllers[bot.id].signal : undefined); }
-                catch(aborted) { return; }
+                var totalWaitMs = waitSec * 1000;
+                // ✅ قسّم الانتظار إلى فترات 30 ثانية كحد أقصى، مع فحص البث بينها
+                var chunkMs = 30000; // 30 ثانية
+                var waitedMs = 0;
+                while (waitedMs < totalWaitMs && bot.isSending) {
+                    var remainingMs = totalWaitMs - waitedMs;
+                    var sleepMs = Math.min(chunkMs, remainingMs);
+                    try { await delay(sleepMs, abortControllers[bot.id] ? abortControllers[bot.id].signal : undefined); }
+                    catch(aborted) { return; }
+                    waitedMs += sleepMs;
+                    // ✅ فحص البث المباشر بعد كل فترة 30 ثانية — يوقف فوراً عند إغلاق البث
+                    if (!eff.sendToNonLive && bot.isSending && waitedMs < totalWaitMs) {
+                        var liveCheck = await checkLiveNow();
+                        if (!liveCheck) {
+                            // ✅ البث توقف أثناء الانتظار — أوقف الإرسال فوراً
+                            var resumed3 = await waitForLive();
+                            if (!resumed3) return;
+                            // عاد البث — تابع الانتظار المتبقي
+                        }
+                    }
+                }
             }
         }
     }
