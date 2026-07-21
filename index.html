@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6942043378198927"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RedKick</title>
@@ -268,7 +266,11 @@
             box-shadow:0 0 60px rgba(255,45,45,0.04),0 0 120px rgba(255,45,45,0.02),inset 0 1px 0 rgba(255,255,255,0.02);
         }
         .phase { display:none; }
-        .phase.active { display:block; animation:fadeIn .4s ease; }
+        .phase.active { display:block; animation:phaseIn .35s cubic-bezier(.16,1,.3,1); }
+        @keyframes phaseIn{
+            from{opacity:0;transform:translateY(14px) scale(.98)}
+            to{opacity:1;transform:translateY(0) scale(1)}
+        }
         @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
         label { display:block; font-size:13px; font-weight:700; color:var(--fg); margin-bottom:6px; }
@@ -1119,7 +1121,7 @@
 
 <!-- ✅ زر المعلومات في الزاوية العلوية -->
 <button class="info-fab" onclick="openInfoModal()" title="معلومات الموقع">
-    <i class="fas fa-info"></i>
+    <span style="font-size:18px; line-height:1;">📋</span>
 </button>
 
 <!-- ✅ نافذة المعلومات الشاملة -->
@@ -1886,6 +1888,7 @@ function toggleSendToNonLive() {
     sendToNonLive = !sendToNonLive;
     setToggle('tgSendNonLive', sendToNonLive);
     saveSendToNonLive();
+    playToggleSound(sendToNonLive);
     toast(sendToNonLive ? 'تم تفعيل الإرسال لغير المباشر — كل القنوات' : 'تم تفعيل الإرسال للبث المباشر فقط', 'i');
 }
 
@@ -1908,6 +1911,7 @@ function getEffectiveChannelSettings(ch) {
 }
 
 function openUnifiedSettings() {
+    playModalSound(true);
     $('uMessages').value = unifiedSettings.messages || '';
     $('uRepeat').value = unifiedSettings.isInfinite ? 0 : (unifiedSettings.repeat || 1);
     $('uRepeat').disabled = unifiedSettings.isInfinite;
@@ -1929,6 +1933,7 @@ function openUnifiedSettings() {
 }
 
 function closeUnifiedSettings() {
+    playModalSound(false);
     $('unifiedModal').classList.remove('open');
 }
 
@@ -1974,12 +1979,14 @@ function base64ToUtf8(b64) {
 
 // ✅ فتح نافذة النقل
 function openTransferModal() {
+    playModalSound(true);
     $('transferCodeOut').value = '';
     $('transferCodeIn').value = '';
     $('transferModal').classList.add('open');
 }
 
 function closeTransferModal() {
+    playModalSound(false);
     $('transferModal').classList.remove('open');
 }
 
@@ -2191,6 +2198,7 @@ function uToggleEnabled() {
     unifiedSettings.enabled = !unifiedSettings.enabled;
     setToggle('tgUnifiedEnabled', unifiedSettings.enabled);
     $('unifiedFields').style.display = unifiedSettings.enabled ? 'block' : 'none';
+    playToggleSound(unifiedSettings.enabled);
 }
 
 function uToggleInfinite() {
@@ -2199,6 +2207,7 @@ function uToggleInfinite() {
     $('uRepeat').disabled = unifiedSettings.isInfinite;
     if (unifiedSettings.isInfinite) $('uRepeat').value = 0;
     else if ($('uRepeat').value == 0) $('uRepeat').value = 1;
+    playToggleSound(unifiedSettings.isInfinite);
 }
 
 function uToggleRandomDelay() {
@@ -2210,11 +2219,13 @@ function uToggleRandomDelay() {
         uIntervalWrap.style.opacity = unifiedSettings.randomDelay ? '0.35' : '1';
         uIntervalWrap.style.pointerEvents = unifiedSettings.randomDelay ? 'none' : 'auto';
     }
+    playToggleSound(unifiedSettings.randomDelay);
 }
 
 function uToggleRandomMessages() {
     unifiedSettings.randomMessages = !unifiedSettings.randomMessages;
     setToggle('uTgRandomMessages', unifiedSettings.randomMessages);
+    playToggleSound(unifiedSettings.randomMessages);
 }
 
 function saveUnifiedSettings() {
@@ -2265,6 +2276,7 @@ var qsSeparateMode = false;
 var qsSeparateMessages = {}; // { botId: 'message' }
 
 function openQuickSend() {
+    playModalSound(true);
     qsSelectedBots = {};
     qsSelectedChannels = {};
     qsExpandedBot = null;
@@ -2276,12 +2288,14 @@ function openQuickSend() {
 }
 
 function closeQuickSend() {
+    playModalSound(false);
     $('quickSendModal').classList.remove('open');
 }
 
 // ✅ تبديل وضع الإعدادات المنفصلة
 function toggleQsSeparateMode() {
     qsSeparateMode = !qsSeparateMode;
+    playToggleSound(qsSeparateMode);
     var tg = $('tgQsSeparate');
     if (qsSeparateMode) tg.classList.add('on');
     else tg.classList.remove('on');
@@ -2425,9 +2439,11 @@ async function quickSendSingleBot(botId) {
 }
 
 function qsToggleBot(id) {
+    var newState = !qsSelectedBots[id];
     if (qsSelectedBots[id]) delete qsSelectedBots[id];
     else qsSelectedBots[id] = true;
     if (!qsSelectedBots[id]) delete qsSelectedChannels[id];
+    playToggleSound(newState);
     renderQsBotList();
     renderQsChannelList();
     updateQsSendButton();
@@ -2436,8 +2452,10 @@ function qsToggleBot(id) {
 function qsToggleChannel(botId, slug) {
     if (!qsSelectedBots[botId]) return;
     if (!qsSelectedChannels[botId]) qsSelectedChannels[botId] = {};
+    var newState = !qsSelectedChannels[botId][slug];
     if (qsSelectedChannels[botId][slug]) delete qsSelectedChannels[botId][slug];
     else qsSelectedChannels[botId][slug] = true;
+    playToggleSound(newState);
     renderQsChannelList();
     updateQsSendButton();
     // ✅ حدّث القائمة المنفصلة لعرض عدّاد القنوات المحددة
@@ -2471,6 +2489,7 @@ function renderQsBotList() {
 }
 
 function openQsChannels(botId) {
+    playModalSound(true);
     qsExpandedBot = botId;
     var b = findBot(botId);
     if (!b) return;
@@ -2480,6 +2499,7 @@ function openQsChannels(botId) {
 }
 
 function closeQsChannels() {
+    playModalSound(false);
     $('qsChannelsModal').classList.remove('open');
     qsExpandedBot = null;
 }
@@ -2506,23 +2526,6 @@ function renderQsChannelList() {
 
 function qsToggleExpand(id) {
     openQsChannels(id);
-}
-
-function qsToggleBot(id) {
-    if (qsSelectedBots[id]) delete qsSelectedBots[id];
-    else qsSelectedBots[id] = true;
-    if (!qsSelectedBots[id]) delete qsSelectedChannels[id];
-    renderQsBotList();
-    updateQsSendButton();
-}
-
-function qsToggleChannel(botId, slug) {
-    if (!qsSelectedChannels[botId]) qsSelectedChannels[botId] = {};
-    if (qsSelectedChannels[botId][slug]) delete qsSelectedChannels[botId][slug];
-    else qsSelectedChannels[botId][slug] = true;
-    renderQsChannelList();
-    renderQsBotList();
-    updateQsSendButton();
 }
 
 function updateQsSendButton() {
@@ -2721,14 +2724,122 @@ function loadFromStorage() {
 }
 
 // ═══════════════════════════════════════
+//  ✅ نظام أصوات فوري — استجابة سريعة بدون تأخير
+// ═══════════════════════════════════════
+
+// ✅ AudioContext واحد مشترك — لا ننشئ واحداً جديداً في كل مرة (سريع جداً)
+var _sfxCtx = null;
+var _sfxReady = false;
+function _getSfxCtx() {
+    if (!_sfxCtx) {
+        try {
+            var AC = window.AudioContext || window.webkitAudioContext;
+            if (!AC) return null;
+            _sfxCtx = new AC();
+            _sfxReady = true;
+        } catch(e) { return null; }
+    }
+    // ✅ استئناف الـ context إن كان معلّقاً (سياسة المتصفح)
+    if (_sfxCtx.state === 'suspended') {
+        try { _sfxCtx.resume(); } catch(e) {}
+    }
+    return _sfxCtx;
+}
+
+// ✅ دالة عامة لتشغيل أي نغمة — فورية جداً
+function _playTone(freq, duration, type, volume) {
+    var ctx = _getSfxCtx();
+    if (!ctx) return;
+    try {
+        var now = ctx.currentTime; // فوري
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(volume || 0.08, now + 0.003);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + duration + 0.02);
+    } catch(e) {}
+}
+
+// ✅ صوت النقر — قصير جداً وحاد (5 أجزاء من الثانية)
+function playClickSound() {
+    _playTone(880, 0.05, 'sine', 0.06);
+}
+// ✅ صوت النقر الخفيف — أهدأ
+function playClickSoft() {
+    _playTone(660, 0.04, 'sine', 0.04);
+}
+// ✅ صوت التبديل (toggle on) — نغمة عالية
+function playToggleSound(on) {
+    if (on) {
+        _playTone(880, 0.06, 'square', 0.05);
+        setTimeout(function(){ _playTone(1320, 0.06, 'square', 0.04); }, 40);
+    } else {
+        _playTone(440, 0.08, 'square', 0.05);
+    }
+}
+// ✅ صوت النجاح — نغمتان صاعدتان سريعتان
+function playSuccessSound() {
+    _playTone(660, 0.08, 'triangle', 0.07);
+    setTimeout(function(){ _playTone(990, 0.1, 'triangle', 0.06); }, 60);
+}
+// ✅ صوت الخطأ — نغمة هابطة
+function playErrorSound() {
+    _playTone(330, 0.1, 'sawtooth', 0.06);
+    setTimeout(function(){ _playTone(220, 0.12, 'sawtooth', 0.05); }, 80);
+}
+// ✅ صوت فتح/إغلاق نافذة
+function playModalSound(open) {
+    if (open) {
+        _playTone(523, 0.06, 'sine', 0.05);
+        setTimeout(function(){ _playTone(659, 0.06, 'sine', 0.04); }, 30);
+    } else {
+        _playTone(659, 0.05, 'sine', 0.04);
+        setTimeout(function(){ _playTone(523, 0.06, 'sine', 0.04); }, 30);
+    }
+}
+
+// ✅ مستمع عام: أي زر/عنصر قابل للنقر → صوت فوري
+// نستخدم capture phase للسرعة القصوى (قبل أي معالجة أخرى)
+document.addEventListener('pointerdown', function(e) {
+    var t = e.target;
+    if (!t) return;
+    // ✅ تجاهل النقر على حقول الإدخال
+    if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA') return;
+    // ✅ ابحث عن أقرب عنصر قابل للنقر
+    var el = t.closest('button, [onclick], .toggle, .header-toggle, .bot-checkbox, .info-tab, .quick-item, .feature-card, .info-fab, .whatsapp-fab, .back-btn, .modal-x, .nav-btn');
+    if (!el) return;
+    // ✅ صوت فوري — لا انتظار
+    playClickSound();
+}, true);
+
+// ✅ تفعيل AudioContext عند أول تفاعل (سياسة المتصفح)
+document.addEventListener('pointerdown', function() {
+    _getSfxCtx();
+}, { once: true });
+
+document.addEventListener('keydown', function() {
+    _getSfxCtx();
+}, { once: true });
+
+// ═══════════════════════════════════════
 //  واجهة المستخدم
 // ═══════════════════════════════════════
 function showPhase(name) {
     document.querySelectorAll('.phase').forEach(function(p){ p.classList.remove('active'); });
     $('ph-'+name).classList.add('active');
+    playClickSound(); // ✅ صوت عند التنقل بين الصفحات
 }
 
 function toast(msg, type) {
+    // ✅ صوت حسب نوع الرسالة
+    if (type === 's') playSuccessSound();
+    else if (type === 'e') playErrorSound();
     var t = document.createElement('div');
     t.className = 'toast toast-' + (type || 'i');
     t.textContent = msg;
@@ -2829,9 +2940,11 @@ function navBackFromAdd() {
 //  ✅ زر التواصل عبر واتساب
 // ═══════════════════════════════════════
 function openWhatsAppModal() {
+    playModalSound(true);
     $('whatsAppModal').classList.add('open');
 }
 function closeWhatsAppModal() {
+    playModalSound(false);
     $('whatsAppModal').classList.remove('open');
 }
 // ✅ تحويل المستخدم إلى واتساب على الرقم +963 995271182
@@ -2845,9 +2958,11 @@ function goToWhatsApp() {
 //  ✅ نافذة المعلومات الشاملة
 // ═══════════════════════════════════════
 function openInfoModal() {
+    playModalSound(true);
     $('infoModal').classList.add('open');
 }
 function closeInfoModal() {
+    playModalSound(false);
     $('infoModal').classList.remove('open');
 }
 // ✅ تبديل بين أقسام المعلومات
@@ -2874,6 +2989,7 @@ function switchInfoTab(tabName, btnEl) {
 var renewTokenBotId = null;
 
 function openRenewToken(id) {
+    playModalSound(true);
     var b = findBot(id);
     if (!b) return;
     renewTokenBotId = id;
@@ -2887,6 +3003,7 @@ function openRenewToken(id) {
 }
 
 function closeRenewToken() {
+    playModalSound(false);
     $('renewTokenModal').classList.remove('open');
     renewTokenBotId = null;
 }
@@ -3041,8 +3158,10 @@ function renderBotList() {
 //  التحديد
 // ═══════════════════════════════════════
 function toggleSelect(id) {
+    var newState = !selectedBots[id];
     if (selectedBots[id]) delete selectedBots[id];
     else selectedBots[id] = true;
+    playToggleSound(newState);
     persist();
     renderBotList();
 }
@@ -3112,6 +3231,7 @@ function removeBot(id) {
 //  النافذة المنبثقة لإعدادات البوت
 // ═══════════════════════════════════════
 function openSettings(id) {
+    playModalSound(true);
     var b = findBot(id);
     if (!b) return;
     activeModalBotId = id;
@@ -3128,6 +3248,7 @@ function openSettings(id) {
 }
 
 function closeSettings() {
+    playModalSound(false);
     $('settingsModal').classList.remove('open');
     activeModalBotId = null;
 }
@@ -3143,6 +3264,7 @@ function mToggle(toggleId, fieldName) {
     if (!b) return;
     b[fieldName] = !b[fieldName];
     setToggle(toggleId, b[fieldName]);
+    playToggleSound(b[fieldName]);
     persist();
 }
 
@@ -3316,6 +3438,7 @@ function saveSettings() {
 var activeChannelSlug = null;
 
 function openChannelSettings(slug) {
+    playModalSound(true);
     if (activeModalBotId === null) return;
     var b = findBot(activeModalBotId);
     if (!b) return;
@@ -3343,6 +3466,7 @@ function openChannelSettings(slug) {
 }
 
 function closeChannelSettings() {
+    playModalSound(false);
     $('channelModal').classList.remove('open');
     activeChannelSlug = null;
 }
@@ -3357,6 +3481,7 @@ function cToggleInfinite() {
     $('cRepeat').disabled = ch.isInfinite;
     if (ch.isInfinite) $('cRepeat').value = 0;
     else if ($('cRepeat').value == 0) $('cRepeat').value = 1;
+    playToggleSound(ch.isInfinite);
     persist();
 }
 
@@ -3374,6 +3499,7 @@ function cToggleRandomDelay() {
         cIntervalWrap.style.opacity = ch.randomDelay ? '0.35' : '1';
         cIntervalWrap.style.pointerEvents = ch.randomDelay ? 'none' : 'auto';
     }
+    playToggleSound(ch.randomDelay);
     persist();
 }
 
@@ -3385,6 +3511,7 @@ function cToggleRandomMessages() {
     if (!ch) return;
     ch.randomMessages = !ch.randomMessages;
     setToggle('tgRandomMessages', ch.randomMessages);
+    playToggleSound(ch.randomMessages);
     persist();
 }
 
