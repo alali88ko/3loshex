@@ -182,6 +182,60 @@
             50%{opacity:.7;transform:scale(1.12)}
         }
 
+        /* ✅ زر تغيير اللون 🎨 */
+        .theme-fab {
+            position:fixed; top:14px; right:14px; z-index:46;
+            width:38px; height:38px; border-radius:50%;
+            background:linear-gradient(135deg,#9C27B0,#3F51B5);
+            color:#fff; border:none; cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+            font-size:16px; font-weight:900; font-family:inherit;
+            box-shadow:0 4px 14px rgba(156,39,176,0.45), 0 0 0 1px rgba(255,255,255,0.1);
+            transition:all .25s;
+        }
+        .theme-fab:hover { transform:scale(1.08) rotate(15deg); box-shadow:0 6px 20px rgba(156,39,176,0.6); }
+        .theme-fab span { font-size:18px; line-height:1; }
+        .theme-fab::before {
+            content:''; position:absolute; inset:-3px; border-radius:50%;
+            border:2px solid rgba(156,39,176,0.4); opacity:0;
+            animation:themePulse 2.5s ease-in-out infinite;
+        }
+        @keyframes themePulse{
+            0%,100%{opacity:0;transform:scale(1)}
+            50%{opacity:.7;transform:scale(1.12)}
+        }
+        /* ✅ قائمة الألوان */
+        .theme-picker {
+            position:fixed; top:60px; right:14px; z-index:46;
+            background:rgba(15,8,8,0.97); backdrop-filter:blur(12px);
+            border:1px solid rgba(255,255,255,0.1); border-radius:14px;
+            padding:12px; box-shadow:0 8px 32px rgba(0,0,0,0.6);
+            display:none; flex-direction:column; gap:10px;
+            min-width:180px;
+        }
+        .theme-picker.open { display:flex; animation:themePickerIn .25s ease; }
+        @keyframes themePickerIn{from{opacity:0;transform:translateY(-8px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+        .theme-picker-title {
+            font-size:11px; font-weight:700; color:var(--muted);
+            text-align:center; margin-bottom:4px;
+            text-transform:uppercase; letter-spacing:1px;
+        }
+        .theme-grid {
+            display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
+        }
+        .theme-color-btn {
+            width:36px; height:36px; border-radius:50%;
+            border:2px solid rgba(255,255,255,0.15); cursor:pointer;
+            transition:all .2s; position:relative;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .theme-color-btn:hover { transform:scale(1.15); border-color:rgba(255,255,255,0.5); }
+        .theme-color-btn.active { border-color:#fff; box-shadow:0 0 12px rgba(255,255,255,0.4); }
+        .theme-color-btn.active::after {
+            content:'✓'; color:#fff; font-size:14px; font-weight:900;
+            text-shadow:0 1px 3px rgba(0,0,0,0.8);
+        }
+
         /* ✅ نافذة المعلومات */
         .info-modal-body { padding:8px 4px; max-height:65vh; overflow-y:auto; }
         .info-tabs {
@@ -1123,6 +1177,17 @@
 <button class="info-fab" onclick="openInfoModal()" title="معلومات الموقع">
     <span style="font-size:18px; line-height:1;">📋</span>
 </button>
+
+<!-- ✅ زر تغيير لون الموقع 🎨 -->
+<button class="theme-fab" onclick="toggleThemePicker()" title="تغيير لون الموقع">
+    <span>🎨</span>
+</button>
+
+<!-- ✅ قائمة الألوان -->
+<div class="theme-picker" id="themePicker">
+    <div class="theme-picker-title">اختر اللون</div>
+    <div class="theme-grid" id="themeGrid"></div>
+</div>
 
 <!-- ✅ نافذة المعلومات الشاملة -->
 <div class="modal-overlay" id="infoModal" onclick="if(event.target===this)closeInfoModal()">
@@ -2984,6 +3049,112 @@ function switchInfoTab(tabName, btnEl) {
 }
 
 // ═══════════════════════════════════════
+//  ✅ تغيير لون الموقع 🎨
+// ═══════════════════════════════════════
+
+// ✅ قائمة الثيمات (الألوان الأساسية)
+var THEMES = [
+    { id: 'red',     name: 'أحمر',     accent: '#FF2D2D', accent2: '#FF6B1A', accent3: '#FFB800', bg: '#080404', border: 'rgba(255,45,45,0.12)',  card: 'rgba(18,8,8,0.95)',   color: '#FF2D2D' },
+    { id: 'green',   name: 'أخضر',     accent: '#00C853', accent2: '#00E676', accent3: '#69F0AE', bg: '#040a06', border: 'rgba(0,200,83,0.15)',  card: 'rgba(8,18,12,0.95)',  color: '#00C853' },
+    { id: 'purple',  name: 'بنفسجي',   accent: '#9C27B0', accent2: '#BA68C8', accent3: '#E1BEE7', bg: '#0a0408', border: 'rgba(156,39,176,0.15)', card: 'rgba(18,8,14,0.95)',  color: '#9C27B0' },
+    { id: 'blue',    name: 'أزرق',     accent: '#2196F3', accent2: '#64B5F6', accent3: '#90CAF9', bg: '#04060a', border: 'rgba(33,150,243,0.15)', card: 'rgba(8,12,18,0.95)',  color: '#2196F3' },
+    { id: 'orange',  name: 'برتقالي',  accent: '#FF6B1A', accent2: '#FF9800', accent3: '#FFB74D', bg: '#0a0604', border: 'rgba(255,107,26,0.15)', card: 'rgba(18,10,6,0.95)',  color: '#FF6B1A' },
+    { id: 'pink',    name: 'وردي',     accent: '#E91E63', accent2: '#F06292', accent3: '#F8BBD0', bg: '#0a0406', border: 'rgba(233,30,99,0.15)',  card: 'rgba(18,8,10,0.95)',  color: '#E91E63' },
+    { id: 'cyan',    name: 'سماوي',    accent: '#00BCD4', accent2: '#4DD0E1', accent3: '#80DEEA', bg: '#04080a', border: 'rgba(0,188,212,0.15)',  card: 'rgba(6,14,18,0.95)',  color: '#00BCD4' },
+    { id: 'yellow',  name: 'أصفر',     accent: '#FFC107', accent2: '#FFD54F', accent3: '#FFE082', bg: '#0a0a04', border: 'rgba(255,193,7,0.15)',  card: 'rgba(18,18,6,0.95)',  color: '#FFC107' },
+    { id: 'indigo',  name: 'كحلي',     accent: '#3F51B5', accent2: '#5C6BC0', accent3: '#9FA8DA', bg: '#04050a', border: 'rgba(63,81,181,0.15)',  card: 'rgba(8,10,18,0.95)',  color: '#3F51B5' },
+    { id: 'teal',    name: 'فيروزي',   accent: '#009688', accent2: '#4DB6AC', accent3: '#80CBC4', bg: '#040a08', border: 'rgba(0,150,136,0.15)',  card: 'rgba(6,16,14,0.95)',  color: '#009688' },
+    { id: 'lime',    name: 'ليموني',   accent: '#CDDC39', accent2: '#D4E157', accent3: '#E6EE9C', bg: '#080a04', border: 'rgba(205,220,57,0.15)', card: 'rgba(14,16,6,0.95)',  color: '#CDDC39' },
+    { id: 'magenta', name: 'أرجواني',  accent: '#FF00FF', accent2: '#EA80FC', accent3: '#F3E5F5', bg: '#0a040a', border: 'rgba(255,0,255,0.15)',  card: 'rgba(18,6,18,0.95)',  color: '#FF00FF' }
+];
+var THEME_KEY = 'redkick_theme_v1';
+var _currentThemeId = 'red';
+
+// ✅ تطبيق ثيم معيّن
+function applyTheme(themeId) {
+    var theme = null;
+    for (var i = 0; i < THEMES.length; i++) {
+        if (THEMES[i].id === themeId) { theme = THEMES[i]; break; }
+    }
+    if (!theme) return;
+    _currentThemeId = themeId;
+    var root = document.documentElement;
+    root.style.setProperty('--accent', theme.accent);
+    root.style.setProperty('--accent2', theme.accent2);
+    root.style.setProperty('--accent3', theme.accent3);
+    root.style.setProperty('--bg', theme.bg);
+    root.style.setProperty('--border', theme.border);
+    root.style.setProperty('--card', theme.card);
+    // ✅ تحديث الحواف والظلال
+    root.style.setProperty('--danger', theme.accent);
+    // ✅ حفظ الثيم
+    try { localStorage.setItem(THEME_KEY, themeId); } catch(e) {}
+    // ✅ تحديث الزر النشط
+    var btns = document.querySelectorAll('.theme-color-btn');
+    for (var j = 0; j < btns.length; j++) {
+        if (btns[j].getAttribute('data-theme') === themeId) {
+            btns[j].classList.add('active');
+        } else {
+            btns[j].classList.remove('active');
+        }
+    }
+    // ✅ تحديث لون زر toggle.on
+    var styleEl = document.getElementById('dynamic-theme-style');
+    if (!styleEl) {
+        styleEl = document.createElement('style');
+        styleEl.id = 'dynamic-theme-style';
+        document.head.appendChild(styleEl);
+    }
+    styleEl.textContent = '.toggle.on { background:linear-gradient(135deg,' + theme.accent + ',' + theme.accent2 + ') !important; border-color:' + theme.accent + ' !important; box-shadow:0 0 10px ' + theme.accent + '66 !important; }';
+    styleEl.textContent += '.btn-fire { background:linear-gradient(135deg,' + theme.accent + ',' + theme.accent2 + ') !important; }';
+    styleEl.textContent += '.app-name { background:linear-gradient(135deg,' + theme.accent + ' 0%,' + theme.accent2 + ' 50%,' + theme.accent3 + ' 100%) !important; -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important; background-clip:text !important; }';
+    playClickSound();
+}
+
+// ✅ تحميل الثيم المحفوظ
+function loadTheme() {
+    var saved = 'red';
+    try { saved = localStorage.getItem(THEME_KEY) || 'red'; } catch(e) {}
+    applyTheme(saved);
+}
+
+// ✅ بناء قائمة الألوان
+function buildThemeGrid() {
+    var grid = document.getElementById('themeGrid');
+    if (!grid) return;
+    var html = '';
+    for (var i = 0; i < THEMES.length; i++) {
+        var t = THEMES[i];
+        var isActive = (t.id === _currentThemeId) ? ' active' : '';
+        html += '<button class="theme-color-btn' + isActive + '" data-theme="' + t.id + '" title="' + t.name + '" onclick="applyTheme(\'' + t.id + '\')" style="background:linear-gradient(135deg,' + t.accent + ',' + t.accent2 + ')"></button>';
+    }
+    grid.innerHTML = html;
+}
+
+// ✅ فتح/إغلاق قائمة الألوان
+function toggleThemePicker() {
+    var picker = document.getElementById('themePicker');
+    if (!picker) return;
+    if (picker.classList.contains('open')) {
+        picker.classList.remove('open');
+    } else {
+        buildThemeGrid();
+        picker.classList.add('open');
+    }
+    playClickSound();
+}
+
+// ✅ إغلاق القائمة عند النقر خارجها
+document.addEventListener('click', function(e) {
+    var picker = document.getElementById('themePicker');
+    var fab = document.querySelector('.theme-fab');
+    if (!picker || !fab) return;
+    if (!picker.contains(e.target) && !fab.contains(e.target)) {
+        picker.classList.remove('open');
+    }
+});
+
+// ═══════════════════════════════════════
 //  ✅ تجديد التوكن — يحل التوكن الجديد محل القديم مع الإبقاء على كل الإعدادات
 // ═══════════════════════════════════════
 var renewTokenBotId = null;
@@ -4256,6 +4427,7 @@ async function init() {
     loadUnifiedSettings();
     loadSendToNonLive(); // ✅ استعادة حالة زر الإرسال لغير المباشر
     setToggle('tgSendNonLive', sendToNonLive); // ✅ ضبط الزر في الترويسة
+    loadTheme(); // ✅ تحميل الثيم المحفوظ
     try { NetworkGuard.start(); } catch(e) {}
     fetchXsrf().catch(function(){});
     // ✅ تسخين البروكسيات مبكراً — يجد بروكسي شغال قبل أن يحاول المستخدم إضافة قناة
