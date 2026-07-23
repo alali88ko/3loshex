@@ -159,59 +159,37 @@
         .wa-phone-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(37,211,102,0.5); }
         .wa-phone-btn i { font-size:18px; }
 
-        /* ✅ زر المعلومات — في الزاوية العلوية */
+        /* ✅ زر المعلومات و تغيير اللون — داخل الترويسة */
+        .info-fab, .theme-fab {
+            width:32px; height:32px; border-radius:8px; flex-shrink:0;
+            color:#fff; border:none; cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+            font-size:14px; font-weight:900; font-family:inherit;
+            transition:all .2s; padding:0;
+        }
         .info-fab {
-            position:fixed; top:14px; left:14px; z-index:45;
-            width:38px; height:38px; border-radius:50%;
             background:linear-gradient(135deg,#FF2D2D,#FF6B1A);
-            color:#fff; border:none; cursor:pointer;
-            display:flex; align-items:center; justify-content:center;
-            font-size:16px; font-weight:900; font-family:inherit;
-            box-shadow:0 4px 14px rgba(255,45,45,0.45), 0 0 0 1px rgba(255,255,255,0.1);
-            transition:all .25s;
+            box-shadow:0 2px 8px rgba(255,45,45,0.35);
         }
-        .info-fab:hover { transform:scale(1.08); box-shadow:0 6px 20px rgba(255,45,45,0.6); }
-        .info-fab i { font-size:16px; }
-        .info-fab::before {
-            content:''; position:absolute; inset:-3px; border-radius:50%;
-            border:2px solid rgba(255,45,45,0.4); opacity:0;
-            animation:infoPulse 2.5s ease-in-out infinite;
-        }
-        @keyframes infoPulse{
-            0%,100%{opacity:0;transform:scale(1)}
-            50%{opacity:.7;transform:scale(1.12)}
-        }
-
-        /* ✅ زر تغيير اللون 🎨 */
+        .info-fab:hover { transform:scale(1.08); box-shadow:0 4px 12px rgba(255,45,45,0.5); }
+        .info-fab span { font-size:15px; line-height:1; }
         .theme-fab {
-            position:fixed; top:14px; right:14px; z-index:46;
-            width:38px; height:38px; border-radius:50%;
             background:linear-gradient(135deg,#9C27B0,#3F51B5);
-            color:#fff; border:none; cursor:pointer;
-            display:flex; align-items:center; justify-content:center;
-            font-size:16px; font-weight:900; font-family:inherit;
-            box-shadow:0 4px 14px rgba(156,39,176,0.45), 0 0 0 1px rgba(255,255,255,0.1);
-            transition:all .25s;
+            box-shadow:0 2px 8px rgba(156,39,176,0.35);
         }
-        .theme-fab:hover { transform:scale(1.08) rotate(15deg); box-shadow:0 6px 20px rgba(156,39,176,0.6); }
-        .theme-fab span { font-size:18px; line-height:1; }
-        .theme-fab::before {
-            content:''; position:absolute; inset:-3px; border-radius:50%;
-            border:2px solid rgba(156,39,176,0.4); opacity:0;
-            animation:themePulse 2.5s ease-in-out infinite;
-        }
-        @keyframes themePulse{
-            0%,100%{opacity:0;transform:scale(1)}
-            50%{opacity:.7;transform:scale(1.12)}
-        }
-        /* ✅ قائمة الألوان */
+        .theme-fab:hover { transform:scale(1.08) rotate(15deg); box-shadow:0 4px 12px rgba(156,39,176,0.5); }
+        .theme-fab span { font-size:15px; line-height:1; }
+        @keyframes infoPulse{0%,100%{opacity:0;transform:scale(1)}50%{opacity:.7;transform:scale(1.12)}}
+        @keyframes themePulse{0%,100%{opacity:0;transform:scale(1)}50%{opacity:.7;transform:scale(1.12)}}
+
+        /* ✅ قائمة الألوان — تظهر تحت الزر */
         .theme-picker {
-            position:fixed; top:60px; right:14px; z-index:46;
+            position:fixed; z-index:46;
             background:rgba(15,8,8,0.97); backdrop-filter:blur(12px);
             border:1px solid rgba(255,255,255,0.1); border-radius:14px;
             padding:12px; box-shadow:0 8px 32px rgba(0,0,0,0.6);
             display:none; flex-direction:column; gap:10px;
-            min-width:180px;
+            min-width:200px; max-width:280px;
         }
         .theme-picker.open { display:flex; animation:themePickerIn .25s ease; }
         @keyframes themePickerIn{from{opacity:0;transform:translateY(-8px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -376,14 +354,16 @@
         .bot-list::-webkit-scrollbar-thumb { background:rgba(255,45,45,0.2); border-radius:2px; }
         .bot-card {
             display:flex; align-items:center; gap:12px;
-            padding:12px 14px; background:rgba(255,45,45,0.04);
-            border:1px solid var(--border); border-radius:14px;
+            padding:12px 14px;
+            background:var(--bot-card-bg, rgba(255,45,45,0.08));
+            border:2px solid var(--bot-card-border, var(--accent));
+            border-radius:14px;
             transition:all .2s;
         }
-        .bot-card:hover { border-color:rgba(255,45,45,0.3); background:rgba(255,45,45,0.07); }
+        .bot-card:hover { border-color:var(--accent); background:var(--bot-card-hover, rgba(255,45,45,0.14)); }
         .bot-card.selected {
-            border-color:var(--accent); background:rgba(255,45,45,0.1);
-            box-shadow:0 0 16px rgba(255,45,45,0.2);
+            border-color:var(--accent); background:var(--bot-card-active, rgba(255,45,45,0.18));
+            box-shadow:0 0 16px var(--bot-card-glow, rgba(255,45,45,0.3));
         }
         .bot-avatar {
             width:40px; height:40px; border-radius:11px; flex-shrink:0;
@@ -1136,6 +1116,13 @@
             <button class="btn btn-ghost btn-xs" onclick="openUnifiedSettings()" title="إعدادات موحدة لكل القنوات" style="flex-shrink:0"><i class="fas fa-screwdriver-wrench"></i></button>
             <button class="btn btn-ghost btn-xs" onclick="openTransferModal()" title="نقل البيانات بين الأجهزة" style="flex-shrink:0"><i class="fas fa-share-nodes"></i></button>
             <button class="btn btn-fire btn-xs" onclick="openQuickSend()" title="إرسال رسالة مباشرة" style="flex-shrink:0"><i class="fas fa-paper-plane"></i></button>
+            <!-- ✅ زر المعلومات 📋 + زر تغيير اللون 🎨 — بنفس تنسيق الأزرار الثلاثة -->
+            <button class="btn btn-fire btn-xs" onclick="openInfoModal()" title="معلومات الموقع" style="flex-shrink:0; padding:6px 8px;">
+                <span style="font-size:13px; line-height:1;">📋</span>
+            </button>
+            <button class="btn btn-ghost btn-xs" onclick="toggleThemePicker()" title="تغيير لون الموقع" style="flex-shrink:0; padding:6px 8px;">
+                <span style="font-size:13px; line-height:1;">🎨</span>
+            </button>
             <!-- ✅ زر الإرسال لغير المباشر — مستقل عن الإعدادات الموحدة -->
             <div class="header-toggle" onclick="toggleSendToNonLive()" title="عند التفعيل: ترسل لكل القنوات (مباشر وغير مباشر). عند الإيقاف: ترسل فقط للبث المباشر">
                 <i class="fas fa-tower-broadcast" style="color:var(--accent);font-size:10px"></i>
@@ -1173,17 +1160,7 @@
     <span>تواصل معنا</span>
 </button>
 
-<!-- ✅ زر المعلومات في الزاوية العلوية -->
-<button class="info-fab" onclick="openInfoModal()" title="معلومات الموقع">
-    <span style="font-size:18px; line-height:1;">📋</span>
-</button>
-
-<!-- ✅ زر تغيير لون الموقع 🎨 -->
-<button class="theme-fab" onclick="toggleThemePicker()" title="تغيير لون الموقع">
-    <span>🎨</span>
-</button>
-
-<!-- ✅ قائمة الألوان -->
+<!-- ✅ قائمة الألوان (منبثقة) -->
 <div class="theme-picker" id="themePicker">
     <div class="theme-picker-title">اختر اللون</div>
     <div class="theme-grid" id="themeGrid"></div>
@@ -3087,6 +3064,17 @@ function applyTheme(themeId) {
     root.style.setProperty('--card', theme.card);
     // ✅ تحديث الحواف والظلال
     root.style.setProperty('--danger', theme.accent);
+    // ✅ تحديث ألوان خانات البوتات — حواف غامقة جداً + داخل أخف
+    // تحويل hex إلى rgba
+    var hex = theme.accent.replace('#','');
+    var r = parseInt(hex.substr(0,2),16);
+    var g = parseInt(hex.substr(2,2),16);
+    var b = parseInt(hex.substr(4,2),16);
+    root.style.setProperty('--bot-card-border', theme.accent);                          // حافة غامقة جداً
+    root.style.setProperty('--bot-card-bg', 'rgba(' + r + ',' + g + ',' + b + ',0.12)');     // داخل خفيف
+    root.style.setProperty('--bot-card-hover', 'rgba(' + r + ',' + g + ',' + b + ',0.20)');  // hover أغمق قليلاً
+    root.style.setProperty('--bot-card-active', 'rgba(' + r + ',' + g + ',' + b + ',0.28)'); // selected أغمق
+    root.style.setProperty('--bot-card-glow', 'rgba(' + r + ',' + g + ',' + b + ',0.45)');   // توهج التحديد
     // ✅ حفظ الثيم
     try { localStorage.setItem(THEME_KEY, themeId); } catch(e) {}
     // ✅ تحديث الزر النشط
@@ -3108,6 +3096,7 @@ function applyTheme(themeId) {
     styleEl.textContent = '.toggle.on { background:linear-gradient(135deg,' + theme.accent + ',' + theme.accent2 + ') !important; border-color:' + theme.accent + ' !important; box-shadow:0 0 10px ' + theme.accent + '66 !important; }';
     styleEl.textContent += '.btn-fire { background:linear-gradient(135deg,' + theme.accent + ',' + theme.accent2 + ') !important; }';
     styleEl.textContent += '.app-name { background:linear-gradient(135deg,' + theme.accent + ' 0%,' + theme.accent2 + ' 50%,' + theme.accent3 + ' 100%) !important; -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important; background-clip:text !important; }';
+    styleEl.textContent += '.bot-avatar { background:linear-gradient(135deg,rgba(' + r + ',' + g + ',' + b + ',0.25),rgba(' + r + ',' + g + ',' + b + ',0.15)) !important; color:' + theme.accent + ' !important; }';
     playClickSound();
 }
 
@@ -3134,11 +3123,32 @@ function buildThemeGrid() {
 // ✅ فتح/إغلاق قائمة الألوان
 function toggleThemePicker() {
     var picker = document.getElementById('themePicker');
+    // ✅ ابحث عن زر 🎨 (الذي يحتوي onclick="toggleThemePicker()")
+    var fab = null;
+    var btns = document.querySelectorAll('button[onclick="toggleThemePicker()"]');
+    if (btns.length > 0) fab = btns[btns.length - 1]; // آخر زر (في app-header)
     if (!picker) return;
     if (picker.classList.contains('open')) {
         picker.classList.remove('open');
     } else {
         buildThemeGrid();
+        // ✅ وضع القائمة داخل الشاشة — محاذاة لليمين
+        if (fab) {
+            var rect = fab.getBoundingClientRect();
+            picker.style.top = (rect.bottom + 6) + 'px';
+            // ✅ محاذاة الحافة اليمنى للقائمة مع الحافة اليمنى للزر
+            var pickerWidth = 240; // عرض تقريبي للقائمة
+            var leftPos = rect.right - pickerWidth;
+            // ✅ تأكد من عدم الخروج من الشاشة
+            if (leftPos < 8) leftPos = 8;
+            picker.style.left = leftPos + 'px';
+            picker.style.right = 'auto';
+        } else {
+            // ✅ احتياط: وسط الشاشة
+            picker.style.left = '50%';
+            picker.style.right = 'auto';
+            picker.style.transform = 'translateX(-50%)';
+        }
         picker.classList.add('open');
     }
     playClickSound();
@@ -3147,9 +3157,16 @@ function toggleThemePicker() {
 // ✅ إغلاق القائمة عند النقر خارجها
 document.addEventListener('click', function(e) {
     var picker = document.getElementById('themePicker');
-    var fab = document.querySelector('.theme-fab');
-    if (!picker || !fab) return;
-    if (!picker.contains(e.target) && !fab.contains(e.target)) {
+    if (!picker) return;
+    if (!picker.classList.contains('open')) return;
+    // ✅ تحقق إن كان النقر على زر 🎨 أو داخل القائمة
+    var target = e.target;
+    var isThemeBtn = false;
+    if (target && target.closest) {
+        var closestBtn = target.closest('button[onclick="toggleThemePicker()"]');
+        if (closestBtn) isThemeBtn = true;
+    }
+    if (!picker.contains(e.target) && !isThemeBtn) {
         picker.classList.remove('open');
     }
 });
@@ -4766,7 +4783,7 @@ function SetupPersistence() {
     };
 }
 
-function showKeepAliveBadge(show) { 
+function showKeepAliveBadge(show) {
     // تم إزالة الشارة — الدالة فارغة للتوافق
 }
 
