@@ -214,6 +214,102 @@
             text-shadow:0 1px 3px rgba(0,0,0,0.8);
         }
 
+        /* ✅ نافذة الدردشة المباشرة */
+        .livechat-overlay {
+            position:fixed; inset:0; z-index:9998;
+            background:rgba(0,0,0,0.95); backdrop-filter:blur(10px);
+            display:none; flex-direction:column;
+            padding:8px; max-width:560px; margin:0 auto;
+        }
+        .livechat-overlay.open { display:flex; animation:fadeIn .3s ease; }
+        .livechat-head {
+            display:flex; align-items:center; gap:8px;
+            padding:10px 12px; background:rgba(255,45,45,0.08);
+            border:1px solid var(--accent); border-radius:12px 12px 0 0;
+            flex-shrink:0;
+        }
+        .livechat-head .lc-title { flex:1; font-size:14px; font-weight:900; color:var(--accent); }
+        .livechat-head .lc-live-badge {
+            display:flex; align-items:center; gap:4px;
+            padding:3px 8px; border-radius:10px; font-size:10px; font-weight:700;
+            background:rgba(255,45,45,0.2); color:var(--accent);
+        }
+        .livechat-head .lc-live-badge.online { background:rgba(0,200,83,0.2); color:#00c853; }
+        .livechat-head .lc-live-badge .dot { width:6px; height:6px; border-radius:50%; background:currentColor; animation:blink 1.5s infinite; }
+        .livechat-input-bar {
+            display:flex; gap:6px; padding:8px 12px;
+            background:rgba(255,255,255,0.02); border-bottom:1px solid var(--border);
+            flex-shrink:0;
+        }
+        .livechat-input-bar input {
+            flex:1; padding:8px 10px; font-size:13px;
+            background:rgba(8,4,4,0.5); border:1px solid var(--border);
+            border-radius:8px; color:var(--fg); font-family:inherit;
+        }
+        .livechat-input-bar input:focus { outline:none; border-color:var(--accent); }
+        .livechat-input-bar button {
+            padding:8px 14px; font-size:12px; font-weight:700;
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            color:#fff; border:none; border-radius:8px; cursor:pointer;
+            font-family:inherit; transition:all .2s;
+        }
+        .livechat-input-bar button:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(255,45,45,0.3); }
+        .livechat-messages {
+            flex:1; overflow-y:auto; padding:8px 12px;
+            display:flex; flex-direction:column; gap:4px;
+            min-height:200px;
+        }
+        .livechat-messages::-webkit-scrollbar { width:4px; }
+        .livechat-messages::-webkit-scrollbar-thumb { background:rgba(255,45,45,0.3); border-radius:2px; }
+        .lc-msg {
+            display:flex; gap:6px; align-items:flex-start;
+            padding:5px 8px; border-radius:8px;
+            background:rgba(255,255,255,0.02);
+            animation:lcMsgIn .25s ease;
+        }
+        @keyframes lcMsgIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+        .lc-msg .lc-avatar {
+            width:22px; height:22px; border-radius:50%; flex-shrink:0;
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            display:flex; align-items:center; justify-content:center;
+            font-size:10px; font-weight:900; color:#fff;
+        }
+        .lc-msg .lc-content { flex:1; min-width:0; }
+        .lc-msg .lc-username { font-size:11px; font-weight:700; color:var(--accent3); margin-bottom:1px; }
+        .lc-msg .lc-text { font-size:12px; color:var(--fg); line-height:1.4; word-wrap:break-word; }
+        .lc-msg.lc-system { background:rgba(255,184,0,0.08); }
+        .lc-msg.lc-system .lc-text { color:var(--accent3); font-style:italic; font-size:11px; }
+        .lc-msg.lc-own { background:rgba(255,45,45,0.1); border:1px solid rgba(255,45,45,0.2); }
+        .livechat-footer {
+            display:flex; gap:6px; padding:8px 12px;
+            background:rgba(255,255,255,0.02); border-top:1px solid var(--border);
+            border-radius:0 0 12px 12px; flex-shrink:0;
+        }
+        .livechat-footer select {
+            padding:8px 10px; font-size:11px;
+            background:rgba(8,4,4,0.5); border:1px solid var(--border);
+            border-radius:8px; color:var(--fg); font-family:inherit;
+            max-width:140px; cursor:pointer;
+        }
+        .livechat-footer input {
+            flex:1; padding:8px 10px; font-size:13px;
+            background:rgba(8,4,4,0.5); border:1px solid var(--border);
+            border-radius:8px; color:var(--fg); font-family:inherit;
+        }
+        .livechat-footer input:focus { outline:none; border-color:var(--accent); }
+        .livechat-footer button {
+            padding:8px 14px; font-size:12px; font-weight:700;
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            color:#fff; border:none; border-radius:8px; cursor:pointer;
+            font-family:inherit; transition:all .2s;
+        }
+        .livechat-footer button:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(255,45,45,0.3); }
+        .livechat-footer button:disabled { opacity:.4; cursor:not-allowed; }
+        .lc-empty {
+            text-align:center; padding:30px 10px; color:var(--muted); font-size:12px;
+        }
+        .lc-empty i { font-size:32px; display:block; margin-bottom:8px; opacity:.4; }
+
         /* ✅ نافذة المعلومات */
         .info-modal-body { padding:8px 4px; max-height:65vh; overflow-y:auto; }
         .info-tabs {
@@ -1116,6 +1212,10 @@
             <button class="btn btn-ghost btn-xs" onclick="openUnifiedSettings()" title="إعدادات موحدة لكل القنوات" style="flex-shrink:0"><i class="fas fa-screwdriver-wrench"></i></button>
             <button class="btn btn-ghost btn-xs" onclick="openTransferModal()" title="نقل البيانات بين الأجهزة" style="flex-shrink:0"><i class="fas fa-share-nodes"></i></button>
             <button class="btn btn-fire btn-xs" onclick="openQuickSend()" title="إرسال رسالة مباشرة" style="flex-shrink:0"><i class="fas fa-paper-plane"></i></button>
+            <!-- ✅ زر الدردشة المباشرة 💬 -->
+            <button class="btn btn-fire btn-xs" onclick="openLiveChat()" title="دردشة القناة المباشرة" style="flex-shrink:0; padding:6px 8px;">
+                <span style="font-size:13px; line-height:1;">💬</span>
+            </button>
             <!-- ✅ زر المعلومات 📋 + زر تغيير اللون 🎨 — بنفس تنسيق الأزرار الثلاثة -->
             <button class="btn btn-fire btn-xs" onclick="openInfoModal()" title="معلومات الموقع" style="flex-shrink:0; padding:6px 8px;">
                 <span style="font-size:13px; line-height:1;">📋</span>
@@ -1288,6 +1388,34 @@
                 </button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- ✅ نافذة الدردشة المباشرة -->
+<div class="livechat-overlay" id="liveChatOverlay">
+    <div class="livechat-head">
+        <div class="lc-title" id="lcTitle">💬 دردشة القناة</div>
+        <div class="lc-live-badge" id="lcLiveBadge">
+            <span class="dot"></span>
+            <span id="lcLiveText">جارٍ الفحص...</span>
+        </div>
+        <button class="btn btn-ghost btn-xs" onclick="closeLiveChat()" title="إغلاق" style="padding:4px 8px;"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="livechat-input-bar">
+        <input type="text" id="lcChannelInput" placeholder="اسم القناة (مثال: trainertv)" onkeydown="if(event.key==='Enter'){event.preventDefault();loadLiveChatChannel();}">
+        <button onclick="loadLiveChatChannel()"><i class="fas fa-search"></i> دخول</button>
+    </div>
+    <div class="livechat-messages" id="lcMessages">
+        <div class="lc-empty">
+            <i class="fas fa-comments"></i>
+            اكتب اسم القناة بالأعلى واضغط "دخول"<br>
+            <span style="font-size:10px">سيتم جلب رسائل الدردشة فوراً إذا كانت القناة تبث مباشر</span>
+        </div>
+    </div>
+    <div class="livechat-footer">
+        <select id="lcBotSelect" title="اختر البوت المرسل" onchange="updateLcSendButton()"></select>
+        <input type="text" id="lcMessageInput" placeholder="اكتب رسالتك..." oninput="updateLcSendButton()" onkeydown="if(event.key==='Enter'){event.preventDefault();sendLiveChatMessage();}">
+        <button id="lcSendBtn" onclick="sendLiveChatMessage()" disabled><i class="fas fa-paper-plane"></i> إرسال</button>
     </div>
 </div>
 
@@ -2332,6 +2460,353 @@ function openQuickSend() {
 function closeQuickSend() {
     playModalSound(false);
     $('quickSendModal').classList.remove('open');
+}
+
+// ═══════════════════════════════════════
+//  ✅ الدردشة المباشرة 💬 — WebSocket خام (بدون مكتبة خارجية، يتجاوز CORS)
+// ═══════════════════════════════════════
+
+// ✅ إعدادات Pusher الخاصة بـ Kick (مفتاح عام)
+var KICK_PUSHER_KEY = '32cbd69e4b950bf97679';
+var KICK_PUSHER_CLUSTER = 'us2';
+
+var _lcState = {
+    channel: null,
+    chatroomId: null,
+    isLive: false,
+    liveCheckTimer: null,
+    socket: null,
+    socketConnected: false,
+    reconnectTimer: null,
+    messageIds: {},
+    messageCount: 0
+};
+
+function openLiveChat() {
+    playModalSound(true);
+    var sel = $('lcBotSelect');
+    if (sel) {
+        var html = '<option value="">-- اختر بوت --</option>';
+        for (var i = 0; i < accounts.length; i++) {
+            html += '<option value="' + accounts[i].id + '">' + escH(accounts[i].username) + '</option>';
+        }
+        sel.innerHTML = html;
+    }
+    $('lcChannelInput').value = '';
+    $('lcMessageInput').value = '';
+    $('lcSendBtn').disabled = true;
+    $('lcMessages').innerHTML = '<div class="lc-empty"><i class="fas fa-comments"></i>اكتب اسم القناة بالأعلى واضغط "دخول"<br><span style="font-size:10px">سيتم جلب رسائل الدردشة المباشرة فوراً عبر WebSocket</span></div>';
+    $('lcTitle').textContent = '💬 دردشة القناة';
+    $('lcLiveText').textContent = 'غير متصل';
+    $('lcLiveBadge').classList.remove('online');
+    $('liveChatOverlay').classList.add('open');
+    setTimeout(function(){ $('lcChannelInput').focus(); }, 200);
+}
+
+function closeLiveChat() {
+    playModalSound(false);
+    $('liveChatOverlay').classList.remove('open');
+    // ✅ إغلاق WebSocket
+    disconnectLiveChatSocket();
+    // ✅ إيقاف فحص البث
+    if (_lcState.liveCheckTimer) { clearTimeout(_lcState.liveCheckTimer); _lcState.liveCheckTimer = null; }
+    // ✅ إيقاف إعادة الاتصال
+    if (_lcState.reconnectTimer) { clearTimeout(_lcState.reconnectTimer); _lcState.reconnectTimer = null; }
+    _lcState.channel = null;
+}
+
+// ✅ إغلاق WebSocket
+function disconnectLiveChatSocket() {
+    if (_lcState.socket) {
+        _lcState.socketConnected = false;
+        try {
+            _lcState.socket.onopen = null;
+            _lcState.socket.onmessage = null;
+            _lcState.socket.onerror = null;
+            _lcState.socket.onclose = null;
+            _lcState.socket.close();
+        } catch(e) {}
+        _lcState.socket = null;
+    }
+}
+
+// ✅ تحميل قناة دردشة جديدة
+async function loadLiveChatChannel() {
+    var slug = $('lcChannelInput').value.trim().toLowerCase().replace(/^\/+|\/+$/g, '').replace(/\s+/g, '');
+    if (!slug) { toast('أدخل اسم القناة', 'e'); return; }
+
+    // ✅ إعادة ضبط الحالة
+    disconnectLiveChatSocket();
+    if (_lcState.liveCheckTimer) { clearTimeout(_lcState.liveCheckTimer); _lcState.liveCheckTimer = null; }
+    if (_lcState.reconnectTimer) { clearTimeout(_lcState.reconnectTimer); _lcState.reconnectTimer = null; }
+    _lcState.channel = slug;
+    _lcState.chatroomId = null;
+    _lcState.isLive = false;
+    _lcState.messageIds = {};
+    _lcState.messageCount = 0;
+
+    $('lcTitle').textContent = '💬 ' + slug;
+    $('lcLiveText').textContent = 'جارٍ الفحص...';
+    $('lcLiveBadge').classList.remove('online');
+    $('lcMessages').innerHTML = '<div class="lc-empty"><i class="fas fa-spinner fa-spin"></i>جارٍ التحقق من القناة...</div>';
+
+    playClickSound();
+
+    try {
+        // ✅ جلب بيانات القناة للحصول على chatroom_id
+        var chData = await fetchChannel(slug, { workingProxy: -1 });
+        if (!chData) {
+            $('lcMessages').innerHTML = '<div class="lc-empty"><i class="fas fa-circle-xmark"></i>القناة غير موجودة</div>';
+            $('lcLiveText').textContent = 'غير موجود';
+            return;
+        }
+
+        // ✅ استخراج chatroom_id
+        _lcState.chatroomId = extractChatroomId(chData);
+        if (!_lcState.chatroomId) {
+            _lcState.chatroomId = await fetchChatroomId(slug, { workingProxy: -1 });
+        }
+        if (!_lcState.chatroomId) {
+            $('lcMessages').innerHTML = '<div class="lc-empty"><i class="fas fa-circle-xmark"></i>تعذّر جلب معرّف الدردشة</div>';
+            $('lcLiveText').textContent = 'خطأ';
+            return;
+        }
+
+        // ✅ فحص البث المباشر
+        var live = await checkChannelLive(slug, { workingProxy: -1 });
+        _lcState.isLive = (live === true);
+        updateLiveBadge();
+
+        // ✅ الاتصال بـ WebSocket لاستقبال الرسائل المباشرة
+        connectLiveChatSocket(_lcState.chatroomId);
+
+        // ✅ بدء فحص البث الدوري
+        startLiveCheckPolling();
+
+        // ✅ تفعيل زر الإرسال
+        updateLcSendButton();
+
+    } catch(e) {
+        $('lcMessages').innerHTML = '<div class="lc-empty"><i class="fas fa-circle-xmark"></i>خطأ: ' + escH(e.message) + '</div>';
+        $('lcLiveText').textContent = 'خطأ';
+    }
+}
+
+// ✅ الاتصال بـ Pusher عبر WebSocket خام (بدون مكتبة خارجية)
+// WebSocket لا يخضع لقيود CORS — يعمل من أي موقع!
+function connectLiveChatSocket(chatroomId) {
+    disconnectLiveChatSocket();
+
+    var wsUrl = 'wss://ws-' + KICK_PUSHER_CLUSTER + '.pusher.com/app/' + KICK_PUSHER_KEY + '?protocol=7&client=js&version=8.4.0&flash=false';
+
+    $('lcMessages').innerHTML = '<div class="lc-empty"><i class="fas fa-spinner fa-spin"></i>جارٍ الاتصال بالدردشة المباشرة...</div>';
+
+    try {
+        _lcState.socket = new WebSocket(wsUrl);
+    } catch(e) {
+        $('lcMessages').innerHTML = '<div class="lc-empty"><i class="fas fa-circle-xmark"></i>تعذّر الاتصال: ' + escH(e.message) + '</div>';
+        return;
+    }
+
+    // ✅ عند فتح الاتصال
+    _lcState.socket.onopen = function() {
+        // Pusher سيرسل pusher:connection_established تلقائياً
+    };
+
+    // ✅ عند استقبال رسالة
+    _lcState.socket.onmessage = function(event) {
+        try {
+            var parsed = JSON.parse(event.data);
+            var eventName = parsed.event;
+            var eventData = parsed.data;
+
+            // ✅ Parse data if it's a string (Pusher protocol)
+            if (typeof eventData === 'string') {
+                try { eventData = JSON.parse(eventData); } catch(e2) {}
+            }
+
+            if (eventName === 'pusher:connection_established') {
+                // ✅ الاشتراك في قناة الدردشة
+                var subscribeMsg = JSON.stringify({
+                    event: 'pusher:subscribe',
+                    data: {
+                        auth: '',
+                        channel: 'chatrooms.' + chatroomId + '.v2'
+                    }
+                });
+                _lcState.socket.send(subscribeMsg);
+                _lcState.socketConnected = true;
+
+            } else if (eventName === 'pusher:ping') {
+                // ✅ الرد على ping بـ pong (إبقاء الاتصال حياً)
+                _lcState.socket.send(JSON.stringify({event: 'pusher:pong', data: {}}));
+
+            } else if (eventName === 'pusher_internal:subscription_succeeded') {
+                // ✅ تم الاشتراك بنجاح
+                $('lcMessages').innerHTML = '<div class="lc-empty"><i class="fas fa-comments" style="color:var(--success)"></i>متصل بالدردشة المباشرة!<br><span style="font-size:10px">الرسائل ستظهر فور إرسالها في القناة</span></div>';
+
+            } else if (eventName === 'App\\Events\\ChatMessageEvent') {
+                // ✅ رسالة دردشة جديدة!
+                if (eventData) {
+                    // ✅ مسح رسالة "في انتظار الرسائل"
+                    var empty = $('lcMessages').querySelector('.lc-empty');
+                    if (empty) empty.remove();
+                    addChatMessage(eventData);
+                }
+
+            } else if (eventName === 'App\\Events\\MessageDeletedEvent') {
+                // ✅ حذف رسالة (تجاهل)
+            }
+        } catch(e) {}
+    };
+
+    // ✅ عند الخطأ
+    _lcState.socket.onerror = function() {
+        _lcState.socketConnected = false;
+    };
+
+    // ✅ عند الإغلاق
+    _lcState.socket.onclose = function() {
+        _lcState.socketConnected = false;
+        // ✅ إعادة الاتصال تلقائياً بعد 3 ثوانٍ
+        if (_lcState.channel && _lcState.chatroomId) {
+            if (_lcState.reconnectTimer) clearTimeout(_lcState.reconnectTimer);
+            _lcState.reconnectTimer = setTimeout(function() {
+                if (_lcState.channel && _lcState.chatroomId) {
+                    addSystemMessage('⚠ انقطع الاتصال، جارٍ إعادة المحاولة...');
+                    connectLiveChatSocket(_lcState.chatroomId);
+                }
+            }, 3000);
+        }
+    };
+}
+
+// ✅ تحديث شارة البث المباشر
+function updateLiveBadge() {
+    var badge = $('lcLiveBadge');
+    var text = $('lcLiveText');
+    if (_lcState.isLive) {
+        badge.classList.add('online');
+        text.textContent = '● مباشر';
+    } else {
+        badge.classList.remove('online');
+        text.textContent = 'غير مباشر';
+    }
+}
+
+// ✅ فحص البث كل 30 ثانية
+function startLiveCheckPolling() {
+    if (_lcState.liveCheckTimer) clearTimeout(_lcState.liveCheckTimer);
+    _lcState.liveCheckTimer = setTimeout(function() {
+        checkChannelLive(_lcState.channel, { workingProxy: -1 }).then(function(live) {
+            if (live !== null) {
+                var wasLive = _lcState.isLive;
+                _lcState.isLive = (live === true);
+                updateLiveBadge();
+                if (wasLive !== _lcState.isLive) {
+                    addSystemMessage(_lcState.isLive ? 'بدأ البث المباشر' : 'توقف البث المباشر');
+                }
+            }
+            if (_lcState.channel) startLiveCheckPolling();
+        }).catch(function() {
+            if (_lcState.channel) startLiveCheckPolling();
+        });
+    }, 30000);
+}
+
+// ✅ إضافة رسالة للعرض
+function addChatMessage(msg) {
+    var username = 'مستخدم';
+    if (msg.sender) {
+        username = msg.sender.username || msg.sender.slug || msg.sender.user_username || 'مستخدم';
+    } else if (msg.username) {
+        username = msg.username;
+    }
+    var content = msg.content || msg.message || '';
+    if (typeof content === 'object') content = JSON.stringify(content);
+
+    // ✅ منع التكرار
+    var msgId = msg.id || (username + '_' + content + '_' + Date.now());
+    if (_lcState.messageIds[msgId]) return;
+    _lcState.messageIds[msgId] = true;
+
+    var avatar = (username || '?').charAt(0).toUpperCase();
+    var html = '';
+    html += '<div class="lc-msg">';
+    html += '<div class="lc-avatar">' + escH(avatar) + '</div>';
+    html += '<div class="lc-content">';
+    html += '<div class="lc-username">' + escH(username) + '</div>';
+    html += '<div class="lc-text">' + escH(content) + '</div>';
+    html += '</div>';
+    html += '</div>';
+    var container = $('lcMessages');
+    container.insertAdjacentHTML('beforeend', html);
+    _lcState.messageCount++;
+
+    // ✅ الاحتفاظ بآخر 100 رسالة
+    var msgs = container.querySelectorAll('.lc-msg');
+    if (msgs.length > 100) {
+        for (var k = 0; k < msgs.length - 100; k++) {
+            msgs[k].remove();
+        }
+    }
+    // ✅ التمرير لأسفل
+    container.scrollTop = container.scrollHeight;
+}
+
+// ✅ إضافة رسالة نظام
+function addSystemMessage(text) {
+    var html = '<div class="lc-msg lc-system"><div class="lc-content"><div class="lc-text">' + escH(text) + '</div></div></div>';
+    var container = $('lcMessages');
+    container.insertAdjacentHTML('beforeend', html);
+    container.scrollTop = container.scrollHeight;
+}
+
+// ✅ تحديث زر الإرسال
+function updateLcSendButton() {
+    var sel = $('lcBotSelect');
+    var input = $('lcMessageInput');
+    var btn = $('lcSendBtn');
+    var botId = sel ? sel.value : '';
+    var msg = input ? input.value.trim() : '';
+    btn.disabled = !(botId && msg && _lcState.chatroomId);
+}
+
+// ✅ إرسال رسالة في الدردشة
+async function sendLiveChatMessage() {
+    var sel = $('lcBotSelect');
+    var input = $('lcMessageInput');
+    var btn = $('lcSendBtn');
+    var botId = sel ? parseInt(sel.value) : 0;
+    var msg = input ? input.value.trim() : '';
+
+    if (!botId) { toast('اختر بوت أولاً', 'e'); return; }
+    if (!msg) { toast('اكتب رسالة', 'e'); return; }
+    if (!_lcState.chatroomId) { toast('لا توجد قناة محمّلة', 'e'); return; }
+
+    var b = findBot(botId);
+    if (!b) { toast('البوت غير موجود', 'e'); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-sm"></span>';
+
+    try {
+        var result = await sendMessage(_lcState.chatroomId, msg, b.token, b.workingSendProxy);
+        if (result.proxyUsed >= 0) b.workingSendProxy = result.proxyUsed;
+        // ✅ إضافة الرسالة للعرض كمرسلة من قبلنا
+        var html = '<div class="lc-msg lc-own"><div class="lc-avatar">' + escH(b.username.charAt(0).toUpperCase()) + '</div><div class="lc-content"><div class="lc-username">' + escH(b.username) + '</div><div class="lc-text">' + escH(msg) + '</div></div></div>';
+        $('lcMessages').insertAdjacentHTML('beforeend', html);
+        $('lcMessages').scrollTop = $('lcMessages').scrollHeight;
+        input.value = '';
+        playSuccessSound();
+        toast('تم إرسال الرسالة', 's');
+    } catch(e) {
+        playErrorSound();
+        toast('فشل الإرسال: ' + e.message, 'e');
+    } finally {
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال';
+        updateLcSendButton();
+    }
 }
 
 // ✅ تبديل وضع الإعدادات المنفصلة
